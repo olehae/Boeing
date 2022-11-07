@@ -7,7 +7,6 @@ while True:
 
 # first part of number (before .)
 oct_num_first = int(oct(int(dec_num))[2::])
-print(oct_num_first)
 # last part of number (after .)
 dec_num_last = dec_num-int(dec_num)
 
