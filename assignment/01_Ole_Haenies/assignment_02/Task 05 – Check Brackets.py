@@ -16,9 +16,9 @@ while True:
         if counter<0:
             flag = False
     if counter == 0 and flag:
-        print("Correct braces")
+        print("Correct brackets")
         break
     elif counter == 0 and not flag:
-        print("Correct amount of braces, but some of them are facing the wrong way")
+        print("Correct amount of brackets, but some of them are facing the wrong way")
     elif counter != 0:
-        print("Incorrect amount of braces")
+        print("Incorrect amount of brackets")
