@@ -1,0 +1,16 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<!-- you can use a different title by using the block, the default title is boeing -->
+  <title>{% block title %}boeing{% endblock %}</title>
+</head>
+<body>
+  <main>
+    <!-- This is the main block where we will insert different types of content -->
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
