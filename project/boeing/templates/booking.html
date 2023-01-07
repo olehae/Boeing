@@ -1,0 +1,41 @@
+<!-- templates/home.html-->
+{% extends 'base.html' %}
+
+{% block title %}Booking{% endblock %}
+
+
+{% block content %}
+
+<style>
+    .button-row button {
+      background-color: #04AA6D; /* Green background */
+      border: 1px solid green; /* Green border */
+      color: white; /* White text */
+      padding: 8px 24px; /* Some padding */
+      cursor: pointer; /* Pointer/hand icon */
+      float: left; /* Float the buttons side by side */
+    }
+    /* Add a background color on hover */
+    .button-row button:hover {
+      background-color: #3e8e41;
+    }
+    /* Add a background color on focus (clicked) */
+    .button-row button:focus {
+      background-color: darkgreen;
+    }
+</style>
+
+<h1>TEST Flight</h1>
+
+{% for row in rows %}
+    <div class="button-row">
+    {% for seat in seat_set %}
+        <button>{{ seat }}</button>
+    {% endfor %}
+    </div>
+    {{ row }}
+    <br>
+    <br>
+{% endfor %}
+
+{% endblock %}

@@ -22,4 +22,5 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),  # include our own accounts app in accounts/ path
     path("accounts/", include("django.contrib.auth.urls")),  # include builtin auth app in accounts/ path
     path('', TemplateView.as_view(template_name='home.html'), name='home'),  # no path shows home.html template as home
+    path("booking/", include("booking.urls")),  # path booking/ redirects to the booking apps urls file
 ]
