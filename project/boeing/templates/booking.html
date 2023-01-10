@@ -6,36 +6,31 @@
 
 {% block content %}
 
-<style>
-    .button-row button {
-      background-color: #04AA6D; /* Green background */
-      border: 1px solid green; /* Green border */
-      color: white; /* White text */
-      padding: 8px 24px; /* Some padding */
-      cursor: pointer; /* Pointer/hand icon */
-      float: left; /* Float the buttons side by side */
-    }
-    /* Add a background color on hover */
-    .button-row button:hover {
-      background-color: #3e8e41;
-    }
-    /* Add a background color on focus (clicked) */
-    .button-row button:focus {
-      background-color: darkgreen;
-    }
-</style>
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
 
-<h1>TEST Flight</h1>
-
-{% for row in rows %}
-    <div class="button-row">
-    {% for seat in seat_set %}
-        <button>{{ seat }}</button>
+    <form action="" method="POST">
+    {%  csrf_token %}
+    <div>
+    {% for seat in seats %}
+        {% if seat in left_seat %}
+            <br>
+        {% endif %}
+        {% if seat in occupied %}
+            <input name="check" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
+        {% else %}
+            <input name="check" type="checkbox" value="{{ seat }}"> {{ seat }}
+        {% endif %}
     {% endfor %}
     </div>
-    {{ row }}
-    <br>
-    <br>
-{% endfor %}
+    <input type="submit" value="Submit">
+    </form>
+
+{% else %}
+    <h2> You are not logged in, login to gain access to this page </h2>
+    <a href="{% url 'login' %}">Login</a>
+    <br><br>
+    <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
 
 {% endblock %}
