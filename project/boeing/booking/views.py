@@ -4,7 +4,32 @@ from boeing.settings import DATABASES
 # Create your views here.
 
 
-def index(request):
+def overview(request):
+    # connect to db
+    connection = sqlite3.connect(DATABASES['default']['NAME'])
+    cursor = connection.cursor()
+
+    # get data from chartIn3 table
+    seats = cursor.execute("SELECT * FROM {}".format("chartIn3")).fetchall()
+    seat_set = list(set([i[1] for i in seats]))
+    seat_set.sort()
+    middle = seat_set[len(seat_set)//2]
+
+    output_str = ""
+    for elem in seats:
+        if elem[1] == "A":
+            output_str += f"\n{elem[0]}\t"
+        if elem[1] == middle:
+            output_str += " | | "
+        if elem[2]:
+            output_str += "   "
+        else:
+            output_str += f" {elem[1]} "
+
+    return render(request, "overview.html", {"flight_name": "chartIn3", "output": output_str})
+
+
+def checkbox(request):
     # connect to db
     connection = sqlite3.connect(DATABASES['default']['NAME'])
     cursor = connection.cursor()

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Flights{% endblock %}
+
+{% block content %}
+<h1> These are our current Flights:</h1>
+<h2><a href="{% url 'checkbox' %}">{{ flight_name }}</a></h2>
+<pre>
+{{ output }}
+</pre>
+
+
+{% endblock %}

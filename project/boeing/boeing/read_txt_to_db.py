@@ -26,10 +26,11 @@ def init_table(table, source):
     # read from given text file
     with open(source) as f:
         text_file = f.read().split()
-    # remove numbers from text file
-    text_file = [element for element in text_file if element.isalpha()]
+
+    text_file = [element for element in text_file if element.isalpha()]  # remove numbers from text file
     rows = 0
     columns = len(set(text_file))
+    text_file = text_file[columns:]  # remove the first line of seats (it is only used as a header in the txt file)
     for i in text_file:
         if i == 'A':
             rows += 1
@@ -46,5 +47,6 @@ def init_table(table, source):
     connection.close()
 
 
-file_name = r"chartIn3.txt"
-init_table("chartIn3", str(BASE_DIR).removesuffix("boeing") + "project_description\\" + file_name)
+if __name__ == "__main__":
+    file_name = r"chartIn3.txt"
+    init_table("chartIn3", str(BASE_DIR).removesuffix("boeing") + "project_description\\" + file_name)
