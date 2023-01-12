@@ -17,10 +17,16 @@
             |&emsp;|
         {% endif %}
         {% if seat in left_seat %}
+            {% if seat < 10 %}
+              <br>
+              <br>
+              {{seat}}&ensp;&nbsp;
+            {% else %}
+              <br>
+              <br>
+              {{seat}}&nbsp;
             {% firstof seat as x %}
-            <br>
-            <br>
-            {{seat}}
+            {% endif %}
         {% elif seat == "X" %}
           <input name="{{x}}" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
         {% else %}
