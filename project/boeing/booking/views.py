@@ -48,6 +48,8 @@ def checkbox(request):
     # the left seats (Character A) are only needed to format the grid of buttons (<br> before left seat)
     left_seat = seats[::int(len(seats) / rows)]
     left_seat += ["-"+i+"-" for i in left_seat]
+    middle_seat = seats[int(len(seats)/rows/2)::int(len(seats)/rows)]
+    print(middle_seat)
 
     # Mark the occupied seats as "-seat-" example: "0A" is not occupied but "-0A-" is
     for i, status in enumerate(occupied):
@@ -66,6 +68,6 @@ def checkbox(request):
         connection.commit()
     connection.close()
 
-    values = {"seats": seats, "left_seat": left_seat, "occupied": occupied_looking_seats}
+    values = {"seats": seats, "left_seat": left_seat, "occupied": occupied_looking_seats, "middle_seat": middle_seat}
     # gives values defined above to booking.html file
     return render(request, "booking.html", values)

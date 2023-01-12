@@ -15,11 +15,15 @@
     {% for seat in seats %}
         {% if seat in left_seat %}
             <br>
+            <br>
+        {% endif %}
+        {% if seat in middle_seat %}
+            | |
         {% endif %}
         {% if seat in occupied %}
             <input name="check" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
         {% else %}
-            <input name="check" type="checkbox" value="{{ seat }}"> {{ seat }}
+            <input name="check" type="checkbox" value="{{ seat }}"> {{ seat }} 
         {% endif %}
     {% endfor %}
     </div>
