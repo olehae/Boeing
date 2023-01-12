@@ -9,7 +9,7 @@
 {% if user.is_authenticated %}
     <h1>Hi {{ user.username }}!</h1>
     <h2> <a href="{% url 'overview' %}">Our current Flights</a> </h2>
-  <p><a href="{% url 'checkbox' %}">Log Out</a></p>
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
 <!-- show "You are not logged in", login button and signup button if user is not logged in-->
 {% else %}
   <p>You are not logged in</p>
