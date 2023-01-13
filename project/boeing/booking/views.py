@@ -82,5 +82,6 @@ def checkbox(request):
     connection.close()
 
     values = {"seats": seats, "left_seat": left_seat, "occupied": occupied_looking_seats, "middle_seat": middle_seat}
+    return render(request, 'booking.html', values)
     # gives values defined above to booking.html file
-    return render(request, "booking.html", values)
+    
