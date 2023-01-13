@@ -13,17 +13,24 @@
     {%  csrf_token %}
     <div>
     {% for seat in seats %}
-        {% if seat in left_seat %}
-            <br>
-            <br>
-        {% endif %}
         {% if seat in middle_seat %}
             |&emsp;|
         {% endif %}
-        {% if seat in occupied %}
-            <input name="check" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
+        {% if seat in left_seat %}
+            {% if seat < 10 %}
+              <br>
+              <br>
+              {{seat}}&ensp;&nbsp;
+            {% else %}
+              <br>
+              <br>
+              {{seat}}&nbsp;
+            {% firstof seat as x %}
+            {% endif %}
+        {% elif seat == "X" %}
+          <input name="{{x}}" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
         {% else %}
-            <input name="check" type="checkbox" value="{{ seat }}"> {{ seat }} 
+          <input name="{{x}}" type="checkbox" value="{{ seat }}"> {{ seat }} 
         {% endif %}
     {% endfor %}
     </div>
