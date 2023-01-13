@@ -1,14 +1,38 @@
 <!-- templates/registration/signup.html -->
 <!-- use the base.html file -->
+<!-- we need name, secondname, email, password -->
 {% extends "base.html" %}
 
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
   <h2>Sign up</h2>
-  <form method="post">
+  <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <!-- labels for the buttons -->
+
+    <input type="text" id="name" name="name" required>
+    <label for="name"> - Name (4 to 8 characters)</label>
+    
+    <br><br>
+    <input type="text" id="username" name="username" required>
+    <label for="username"> - Username</label>
+    <br><br>
+
+    <input type="text" id="email" name="email" required>
+    <label for="email"> - Email</label>
+    <br><br>
+
+    <input type="password" id="password" name="password" required>
+    <label for="password"> - Password</label>
+    <br><br>
+
+    <input type="password" id="passwordconfirmation" name="passwordconfirmation" required>
+    <label for="passwordconfirmation"> - Passwordconfirmation</label>
+    <br><br>
+
     <button type="submit">Sign Up</button>
   </form>
 {% endblock %}

@@ -8,8 +8,16 @@
 <h2>Log In</h2>
 <form method="post">
   {% csrf_token %}
-<!-- This renders the form as a paragraph -->
   {{ form.as_p }}
+
+  <input type="text" id="username" name="username" required>
+  <label for="username"> - Username</label>
+  <br><br>
+
+  <input type="password" id="password" name="password" required>
+  <label for="password"> - Password</label>
+  <br><br>
+
   <button type="submit">Log In</button>
 </form>
 {% endblock %}
