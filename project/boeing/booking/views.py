@@ -79,12 +79,12 @@ def checkbox(request):
             seats.append(str(seat))
 
     # the left seats (the numbers) are only needed to format the grid of buttons (<br> before left seat)
-    left_seat = seats[::int(len(seats) / rows)]
+    row_number = seats[::int(len(seats) / rows)]
 
     connection.close()
 
     values = {"seats": seats,
-              "left_seat": left_seat,
+              "row_number": row_number,
               "user": User()}
     # gives values defined above to booking.html file
     return render(request, 'booking.html', values)
