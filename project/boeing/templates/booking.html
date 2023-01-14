@@ -6,34 +6,32 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_logged_in %}
     Hi {{ user.username }}!
 
     <form action="" method="POST">
-    {%  csrf_token %}
-    <div>
+    {% csrf_token %}
     {% for seat in seats %}
-        {% if seat in middle_seat %}
-            |&emsp;|
-        {% endif %}
         {% if seat in left_seat %}
             {% if seat < 10 %}
-              <br>
-              <br>
+                <br>
+                <br>
               {{seat}}&ensp;&nbsp;
             {% else %}
-              <br>
-              <br>
+                <br>
+                <br>
               {{seat}}&nbsp;
-            {% firstof seat as x %}
             {% endif %}
+            {% firstof seat as x %}
+        {% elif seat == "middle" %}
+            |&emsp;|
         {% elif seat == "X" %}
-          <input name="{{x}}" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
+            <input name="{{x}}" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
         {% else %}
-          <input name="{{x}}" type="checkbox" value="{{ seat }}"> {{ seat }} 
+            <input name="{{x}}" type="checkbox" value="{{ seat }}"> {{ seat }}
         {% endif %}
     {% endfor %}
-    </div>
+    <br><br>
     <input type="submit" value="Submit">
     </form>
 

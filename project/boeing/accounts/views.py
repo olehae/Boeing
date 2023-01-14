@@ -1,10 +1,6 @@
 from django.shortcuts import render
 import sqlite3
 from boeing.settings import DATABASES
-from email.message import EmailMessage
-import ssl
-import smtplib
-import random
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import boeing.helperfunctions as hf
@@ -14,16 +10,18 @@ def SignUpView(request):
 
     hf.setupdbconnection()
     hf.create_user_database()
-    #delete_table() #just for testing purposes
-    #create_superuser() #function to create admin accounts via terminal, rarely used
-
+    # delete_table() #just for testing purposes
+    # create_superuser() #function to create admin accounts via terminal, rarely used
     rawdata = request.POST
-    #print(rawdata)
 
-    try: # this is necessary since the page POST on refresh, and then rawdata is empty and we get an error when trying to define signupdata
+    # this is necessary since the page POST on refresh,
+    # and then rawdata is empty and we get an error when trying to define signupdata
+    try:
         global signupdata
-        signupdata = {"name": rawdata['name'],"username": rawdata['username'],"email": rawdata['email'],"password": rawdata['password']}
-        #print(signupdata)
+        signupdata = {"name": rawdata['name'],
+                      "username": rawdata['username'],
+                      "email": rawdata['email'],
+                      "password": rawdata['password']}
 
         if rawdata['password']  == rawdata['passwordconfirmation']:
             global verification_code
@@ -38,15 +36,10 @@ def SignUpView(request):
         return render(request, "registration/signup.html")
 
 
-#logs in the user
+# logs in the user
 def LoginView(request):
     hf.setupdbconnection()
 
-    #is_logged_in = {'isloggedin':True}
-
-    #return render(request, "home.html", is_logged_in)
-    #return HttpResponseRedirect(reverse('home', kwargs={"isloggedin": is_logged_in}))
-    
     try:
         raw_logindata = request.POST
         global user_login_data
@@ -55,18 +48,16 @@ def LoginView(request):
 
         if is_logged_in:
             print("hello")
-            return render(request, "home.html", is_logged_in)
-
+            return HttpResponseRedirect(reverse('home'))
 
     except Exception as e:
         print(e)
         return render(request, "registration/login.html")
 
-
     return HttpResponseRedirect(reverse('home'))
 
 
-#sends confirmation email and confirms it with user
+# sends confirmation email and confirms it with user
 def EmailConfirmationView(request):
     print(verification_code)
 

@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
+from boeing.helperfunctions import User
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("accounts.urls")),  # include our own accounts app in accounts/ path
     path("accounts/", include("django.contrib.auth.urls")),  # include builtin auth app in accounts/ path
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),  # no path shows home.html template as home
+    path('', TemplateView.as_view(template_name='home.html'), {"user": User}, name='home'),  # no path shows home.html template as home
     path("booking/", include("booking.urls")),  # path booking/ redirects to the booking apps urls file
 ]

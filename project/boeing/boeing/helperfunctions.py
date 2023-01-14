@@ -1,12 +1,10 @@
-from django.shortcuts import render
 import sqlite3
 from boeing.settings import DATABASES
 from email.message import EmailMessage
 import ssl
 import smtplib
 import random
-from django.urls import reverse
-from django.http import HttpResponseRedirect
+
 
 def setupemailconnection():
     email_sender = 'boeingproject2023@gmail.com'
@@ -15,7 +13,7 @@ def setupemailconnection():
     return email_sender, email_authcode
 
 
-#setting up the curosor as global variable
+# setting up the cursor as global variable
 def setupdbconnection():
     global connection
     global cursor
@@ -23,7 +21,7 @@ def setupdbconnection():
     cursor = connection.cursor()
 
 
-#creating the table user if it does not exist yet
+# creating the table user if it does not exist yet
 def create_user_database():
     sql = "CREATE TABLE IF NOT EXISTS user(" \
           "userid INTEGER PRIMARY KEY, " \
@@ -37,7 +35,7 @@ def create_user_database():
     connection.commit()
 
 
- # this function is just for the developement and testing process, doesn't have any real use we need
+# this function is just for the development and testing process, doesn't have any real use we need
 def delete_table():
     sql = "DROP table user"
     cursor.execute(sql)
@@ -66,7 +64,6 @@ def write_into_db(signupdata):
         cursor.execute(sql, (signupdata["name"], signupdata['username'], signupdata['email'], signupdata['password']))
         connection.commit()
         print("Succesfully created user!")
-        
 
     except:
         print("Creation of user profile failed!")
@@ -74,7 +71,7 @@ def write_into_db(signupdata):
 
 def check_user_login(user_login_data):
         print(user_login_data)
-        sql = "SELECT * FROM user where username = ? AND password = ?;" # have to swap primary key to username I guess
+        sql = "SELECT * FROM user where username = ? AND password = ?;"  # have to swap primary key to username I guess
         cursor.execute(sql, (user_login_data['username'], user_login_data['password']))
 
         current_user = cursor.fetchall()
@@ -97,18 +94,18 @@ def send_confirmation_mail(reveiver_address):
     email_sender, email_authcode = setupemailconnection()
     code = random.randint(10000000, 99999999)
 
-    #define subject and mail body
+    # define subject and mail body
     subject = 'Confirmation Email'
     body = f"""This is your confirmation email with code {code}"""
 
-    #create emailmessage object from emailmassege class and perpare email
+    # create emailmessage object from emailmassege class and perpare email
     em = EmailMessage()
     em['From'] = email_sender
     em['To'] = reveiver_address
     em['Subject'] = subject
     em.set_content(body)
     
-    #formating and sending the email via ssl function
+    # formatting and sending the email via ssl function
     context = ssl.create_default_context()
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
@@ -116,3 +113,19 @@ def send_confirmation_mail(reveiver_address):
         smtp.sendmail(email_sender, reveiver_address, em.as_string())
 
     return code
+
+# Get information about currently logged-in user
+class User:
+    def __init__(self):
+        # connect to db
+        connection = sqlite3.connect(DATABASES['default']['NAME'])
+        cursor = connection.cursor()
+        user = cursor.execute("SELECT * FROM user WHERE isloggedin = TRUE").fetchall()
+        if user:
+            self.name = user[0][1]
+            self.username = user[0][1]
+            self.email = user[0][2]
+            self.is_admin = user[0][3]
+            self.is_logged_in = True
+        else:
+            self.is_logged_in = False
