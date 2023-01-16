@@ -69,7 +69,6 @@ def checkbox(request):
     window_seats = []
     window_seats.append(one_row[0])
     window_seats.append(one_row[-1])
-    print(window_seats)
     seats = []
     row_counter = 1
     for i, seat in enumerate(seat_char):

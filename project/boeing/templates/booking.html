@@ -4,6 +4,40 @@
 
 {% block title %}Booking{% endblock %}
 
+{% block styling %}
+<style>
+.box {
+  display: none;
+}
+.booked {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border: 1px solid black;
+  background-color: red;
+  color: solid black;
+  line-height: 20px;
+}
+label {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border: 1px solid black;
+  background-color: white;
+  color: solid black;
+  line-height: 20px;
+  cursor: pointer
+}
+input[type="checkbox"]:checked + label {
+  border: 1px solid white;
+  color: white;
+  background-color: black;
+}
+</style>
+{% endblock %}
+
 {% block body %}
 <body id="bg" style="background-image: url('{% static "Website.png"%}');">
 {% endblock %}
@@ -19,10 +53,8 @@
         {% if seat in row_number %}
             {% if seat < 10 %}
                 <br>
-                <br>
               {{seat}}&ensp;&nbsp;
             {% else %}
-                <br>
                 <br>
               {{seat}}&nbsp;
             {% endif %}
@@ -30,9 +62,11 @@
         {% elif seat == "middle" %}
             |&emsp;|
         {% elif seat == "X" %}
-            <input name="{{x}}" type="checkbox" onclick="return false" disabled="disabled"> {{ seat }}
+          <input class="box" name="{{x}}" type="checkbox" id="{{seat}}" onclick="return false" disabled="disabled">
+          <label class="booked" for="{{seat}}">{{seat}}</label>
         {% else %}
-            <input name="{{x}}" type="checkbox" value="{{ seat }}"> {{ seat }}
+        <input class="box" name="{{x}}" type="checkbox" id="{{x}}{{seat}}">
+          <label for="{{x}}{{seat}}">{{seat}}</label>
         {% endif %}
     {% endfor %}
     <br><br>
