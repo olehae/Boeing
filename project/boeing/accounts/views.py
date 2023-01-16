@@ -43,10 +43,20 @@ def LoginView(request):
     try:
         raw_logindata = request.POST
         global user_login_data
-        user_login_data = {"username": raw_logindata['username'],"password": raw_logindata['password']}
+        user_login_data = {"username": raw_logindata['username'], "password": raw_logindata['password']}
         is_logged_in = {'isloggedin': hf.check_user_login(user_login_data)}
 
         if is_logged_in:
+            cursor = sqlite3.connect(DATABASES['default']['NAME']).cursor()
+            user = cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?",
+                                  (raw_logindata['username'], raw_logindata['password'])).fetchall()
+            print(user)
+            request.session["name"] = user[0][1]
+            request.session["username"] = user[0][2]
+            request.session["email"] = user[0][3]
+            request.session["superuser"] = user[0][4]
+            request.session["password"] = user[0][6]
+            request.session.set_expiry(0)
             print("hello")
             return HttpResponseRedirect(reverse('home'))
 
@@ -82,18 +92,24 @@ def LogoutView(request):
     connection = sqlite3.connect(DATABASES['default']['NAME'])
     cursor = connection.cursor()
     try:
-        sql = "SELECT username from user where isloggedin = 1;"
-        cursor.execute(sql)
-        loggedin_user = cursor.fetchall()
-    
-        connection.commit()
-        print(loggedin_user)
+        # sql = "SELECT username from user where isloggedin = 1;"
+        # cursor.execute(sql)
+        # loggedin_user = cursor.fetchall()
+        user = request.session["username"]
+        # connection.commit()
+        print(user)
 
-        sql = "UPDATE user SET isloggedin = 0 WHERE username = ?;"
-        cursor.execute(sql, (loggedin_user[0]))
-        connection.commit()
+        # sql = "UPDATE user SET isloggedin = 0 WHERE username = ?;"
+        # cursor.execute(sql, (loggedin_user[0]))
+        # connection.commit()
+        del request.session["name"]
+        del request.session["username"]
+        del request.session["email"]
+        del request.session["superuser"]
+        del request.session["password"]
 
-    except:
+    except Exception as e:
+        print(e)
         print('If nobodys logged in you cant log out')
         return HttpResponseRedirect(reverse('home'))
 

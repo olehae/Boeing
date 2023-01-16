@@ -1,7 +1,6 @@
 from django.shortcuts import render
 import sqlite3
-from boeing.settings import DATABASES,BASE_DIR
-from boeing.helperfunctions import User
+from boeing.settings import DATABASES, BASE_DIR
 # Create your views here.
 
 
@@ -66,9 +65,7 @@ def checkbox(request):
     right_middle_seats = one_row[len(one_row)//2]
     left_middle_seats = one_row[(len(one_row)//2)-1]
     middle_seats = left_middle_seats+right_middle_seats
-    window_seats = []
-    window_seats.append(one_row[0])
-    window_seats.append(one_row[-1])
+    window_seats = [one_row[0], one_row[-1]]
     seats = []
     row_counter = 1
     for i, seat in enumerate(seat_char):
@@ -88,9 +85,17 @@ def checkbox(request):
 
     connection.close()
 
+    try:
+        if request.session["username"]:
+            logged_in = True
+        username = request.session["username"]
+    except KeyError:
+        logged_in = False
+        username = None
     values = {"seats": seats,
               "row_number": row_number,
-              "user": User(),
+              "logged_in": logged_in,
+              "username": username,
               "middle_seats": middle_seats,
               "window_seats": window_seats}
 

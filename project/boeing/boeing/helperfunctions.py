@@ -70,23 +70,23 @@ def write_into_db(signupdata):
 
 
 def check_user_login(user_login_data):
-        print(user_login_data)
-        sql = "SELECT * FROM user where username = ? AND password = ?;"  # have to swap primary key to username I guess
-        cursor.execute(sql, (user_login_data['username'], user_login_data['password']))
+    print(user_login_data)
+    sql = "SELECT * FROM user where username = ? AND password = ?;"  # have to swap primary key to username I guess
+    cursor.execute(sql, (user_login_data['username'], user_login_data['password']))
 
-        current_user = cursor.fetchall()
+    current_user = cursor.fetchall()
 
-        if current_user:
-            sql = "UPDATE user SET isloggedin = 1 WHERE username = ?;"
-            cursor.execute(sql, (user_login_data['username'],))
-            print("login succesful")
-            connection.commit()
+    if current_user:
+        sql = "UPDATE user SET isloggedin = 1 WHERE username = ?;"
+        cursor.execute(sql, (user_login_data['username'],))
+        print("login succesful")
+        connection.commit()
 
-            return True
+        return True
 
-        else:
-            print("login failed") # leads back to login page
-            return False
+    else:
+        print("login failed") # leads back to login page
+        return False
 
 
 def send_confirmation_mail(reveiver_address):
@@ -114,6 +114,7 @@ def send_confirmation_mail(reveiver_address):
 
     return code
 
+
 # Get information about currently logged-in user
 class User:
     def __init__(self):
@@ -129,3 +130,7 @@ class User:
             self.is_logged_in = True
         else:
             self.is_logged_in = False
+
+
+def dbcursor():
+    return sqlite3.connect(DATABASES['default']['NAME']).cursor()

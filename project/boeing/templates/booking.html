@@ -39,13 +39,14 @@ input[type="checkbox"]:checked + label {
 {% endblock %}
 
 {% block body %}
-<body id="bg" style="background-image: url('{% static "Website.png"%}');">
+<body id="bg" style="background-image: url('{% static "Website.png"%}');
+background-repeat: no-repeat">
 {% endblock %}
 
 {% block content %}
 
-{% if user.is_logged_in %}
-    Hi {{ user.username }}!
+{% if logged_in %}
+    Hi {{ username }}!
 
 
     {% csrf_token %}
@@ -53,8 +54,10 @@ input[type="checkbox"]:checked + label {
         {% if seat in row_number %}
             {% if seat < 10 %}
                 <br>
+                <br>
               {{seat}}&ensp;&nbsp;
             {% else %}
+                <br>
                 <br>
               {{seat}}&nbsp;
             {% endif %}

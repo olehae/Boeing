@@ -6,8 +6,8 @@
 
 {% block content %}
 
-{% if user.is_logged_in %}
-    <h1> Hi {{ user.username }}!</h1>
+{% if logged_in %}
+    <h1> Hi {{ username }}!</h1>
     <h2> <a href="{% url 'overview' %}">Our current Flights</a> </h2>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}

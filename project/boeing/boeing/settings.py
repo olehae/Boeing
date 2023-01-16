@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "accounts",  # accounts is not builtin, it was created as a new app
+    'accounts',  # accounts is not builtin, it was created as a new app
     'booking.apps.BookingConfig',  # booking is also a manually created app
 
 ]
