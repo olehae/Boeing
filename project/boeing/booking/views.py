@@ -63,14 +63,20 @@ def checkbox(request):
     seat_char = [str(item[1]) for item in data]
     one_row = list(set(seat_char))
     one_row.sort()
-    middle = one_row[len(one_row)//2]
+    right_middle_seats = one_row[len(one_row)//2]
+    left_middle_seats = one_row[(len(one_row)//2)-1]
+    middle_seats = left_middle_seats+right_middle_seats
+    window_seats = []
+    window_seats.append(one_row[0])
+    window_seats.append(one_row[-1])
+    print(window_seats)
     seats = []
     row_counter = 1
     for i, seat in enumerate(seat_char):
         if seat == "A":
             seats.append(int(row_counter))
             row_counter += 1
-        if seat == middle:
+        if seat == right_middle_seats:
             seats.append("middle")
 
         if occupied[i]:
@@ -85,7 +91,9 @@ def checkbox(request):
 
     values = {"seats": seats,
               "row_number": row_number,
-              "user": User()}
+              "user": User(),
+              "middle_seats": middle_seats,
+              "window_seats": window_seats}
 
     # gives values defined above to booking.html file
     return render(request, 'booking.html', values)
