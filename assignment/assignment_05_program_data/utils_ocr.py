@@ -1,5 +1,6 @@
 import re
 
+
 def correct_ocr_errors(text):
     #  vowels {V}
     vowel = {"a", "e", "i", "o", "y"}
@@ -11,17 +12,20 @@ def correct_ocr_errors(text):
 
     chars = list(text)
     for i in range(len(chars)):
-        # v{C} -> u
-        if chars[i] == "v" and chars[i + 1] in cons:
-            chars[i] = "u"
-            i += 1
-        # {C,V}u{V} -> v
-        if chars[i] == "u" and chars[i + 1] in vowel and chars[i - 1] != "q":
-            chars[i] = "v"
-            i += 1
-        # {C}ne -> {C}n in verbs and some nouns
-        if chars[i] == " " and chars[i - 1] == "e" and chars[i - 2] == "n" and chars[i - 3] in cons:
-            chars[i - 1] = ""
+        try:
+            # v{C} -> u
+            if chars[i] == "v" and chars[i + 1] in cons:
+                chars[i] = "u"
+                i += 1
+            # {C,V}u{V} -> v
+            if chars[i] == "u" and chars[i + 1] in vowel and chars[i - 1] != "q":
+                chars[i] = "v"
+                i += 1
+            # {C}ne -> {C}n in verbs and some nouns
+            if chars[i] == " " and chars[i - 1] == "e" and chars[i - 2] == "n" and chars[i - 3] in cons:
+                chars[i - 1] = ""
+        except IndexError:
+            pass
     # .*esse plural in nouns and adjectives (and some infinitive forms)
     text = "".join(chars)
     text = re.sub("esse ", "ess ", text)
