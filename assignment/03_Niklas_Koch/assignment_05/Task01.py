@@ -10,17 +10,15 @@ def get_speaker_text():
                 start = number
             if "Actus" not in line and "Scena" not in line:
                 play.write(line)
+            normalize_text(line, lines)
 
         play.writelines(lines[start:])
 
-    print(lines)
 
-def normalize_text():
-    with open("0ws3410.txt", "r") as play:
-        lines = play.readlines()
+def normalize_text(sentence, lines):
+    sentence = sentence.lower()
+    return lines
 
-    with open("0ws3410.txt", "w") as play:
-        
 
 get_speaker_text()
                 

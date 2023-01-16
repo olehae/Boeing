@@ -1,15 +1,19 @@
 <!-- templates/home.html-->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Booking{% endblock %}
 
+{% block body %}
+<body id="bg" style="background-image: url('{% static "Website.png"%}');">
+{% endblock %}
 
 {% block content %}
 
 {% if user.is_logged_in %}
     Hi {{ user.username }}!
 
-    <form action="" method="POST">
+
     {% csrf_token %}
     {% for seat in seats %}
         {% if seat in row_number %}

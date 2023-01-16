@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import sqlite3
-from boeing.settings import DATABASES
+from boeing.settings import DATABASES,BASE_DIR
 from boeing.helperfunctions import User
 # Create your views here.
 
@@ -86,6 +86,7 @@ def checkbox(request):
     values = {"seats": seats,
               "row_number": row_number,
               "user": User()}
+
     # gives values defined above to booking.html file
     return render(request, 'booking.html', values)
 
