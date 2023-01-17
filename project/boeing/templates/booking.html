@@ -25,12 +25,15 @@ body {
   display: inline-block;
   text-align: center;
   border: 1px solid black;
-  background-color: red;
+  background-color: #C3C3C3;
   color: solid black;
   cursor: default;
 }
 .background {
   background-size: cover;
+}
+.submit {
+  margin-left: 20%;
 }
 label {
   display: inline-block;
@@ -85,7 +88,7 @@ input[type="checkbox"]:checked + label {
         {% endif %}
     {% endfor %}
     <br><br>
-    <input type="submit" value="Submit">
+    <input class="submit" type="submit" value="Submit">
     </form>
     </div>
 
