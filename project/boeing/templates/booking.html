@@ -59,7 +59,9 @@ input[type="checkbox"]:checked + label {
 
 {% if logged_in %}
     Hi {{ username }}!
-
+    <p><a href="{% url 'overview' %}">Overview</a></p>
+    <p><a href="{% url 'home' %}">Home</a></p>
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
 
     <div class="center">
     <form action="" method="POST">
@@ -85,12 +87,16 @@ input[type="checkbox"]:checked + label {
         {% endif %}
     {% endfor %}
     <br><br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Book">
     </form>
     </div>
 
 {% else %}
     <h2> You are not logged in, login to gain access to this page </h2>
+    <a href="{% url 'home' %}">Home</a>
+    <br><br>
+    <a href="{% url 'overview' %}">Overview</a>
+    <br><br>
     <a href="{% url 'login' %}">Login</a>
     <br><br>
     <a href="{% url 'signup' %}">Signup</a>

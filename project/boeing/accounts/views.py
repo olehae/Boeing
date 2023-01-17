@@ -51,6 +51,7 @@ def LoginView(request):
             user = cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?",
                                   (raw_logindata['username'], raw_logindata['password'])).fetchall()
             print(user)
+            request.session["userid"] = user[0][0]
             request.session["name"] = user[0][1]
             request.session["username"] = user[0][2]
             request.session["email"] = user[0][3]
@@ -102,6 +103,7 @@ def LogoutView(request):
         # sql = "UPDATE user SET isloggedin = 0 WHERE username = ?;"
         # cursor.execute(sql, (loggedin_user[0]))
         # connection.commit()
+        del request.session["userid"]
         del request.session["name"]
         del request.session["username"]
         del request.session["email"]

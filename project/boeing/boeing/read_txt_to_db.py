@@ -20,7 +20,8 @@ def init_table(table, source):
     cursor.execute("""CREATE TABLE {} (
                    Row INT NOT NULL,
                    Seat CHAR(2) NOT NULL ,
-                   Occupied BOOLEAN NOT NULL
+                   Occupied BOOLEAN NOT NULL,
+                   Userid INT
                    );""".format(table))
 
     # read from given text file
@@ -35,7 +36,7 @@ def init_table(table, source):
         if i == 'A':
             rows += 1
         # add rows, i, False to table
-        cursor.execute("""INSERT INTO {} VALUES (?, ?, ?)""".format(table), (rows, i, False))
+        cursor.execute("""INSERT INTO {} VALUES (?, ?, ?, ?)""".format(table), (rows, i, False, None))
 
     # these two calculations are not needed yet, but they might be needed later
     window_seats = (text_file[0], text_file[columns - 1])
@@ -49,4 +50,4 @@ def init_table(table, source):
 
 if __name__ == "__main__":
     file_name = r"chartIn3.txt"
-    init_table("chartIn3", str(BASE_DIR).removesuffix("boeing") + "project_description\\" + file_name)
+    init_table("flight03", str(BASE_DIR).removesuffix("boeing") + "project_description\\" + file_name)

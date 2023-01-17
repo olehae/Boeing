@@ -1,16 +1,17 @@
 from django.shortcuts import render
 import sqlite3
 from boeing.settings import DATABASES, BASE_DIR
+from django.http import HttpRequest
 # Create your views here.
 
 
-def overview(request):
+# get data from table
+def get_seat_data(table_name):
     # connect to db
     connection = sqlite3.connect(DATABASES['default']['NAME'])
     cursor = connection.cursor()
-
-    # get data from chartIn3 table
-    seats = cursor.execute("SELECT * FROM {}".format("chartIn3")).fetchall()
+    seats = cursor.execute("SELECT * FROM {}".format(table_name)).fetchall()
+    connection.close()
     seat_set = list(set([i[1] for i in seats]))
     seat_set.sort()
     middle = seat_set[len(seat_set)//2]
@@ -26,15 +27,24 @@ def overview(request):
         else:
             output_str += f" {elem[1]} "
 
-    return render(request, "overview.html", {"flight_name": "chartIn3", "output": output_str})
+    return output_str
+
+
+def overview(request):
+    flight01 = get_seat_data("flight01")
+    flight02 = get_seat_data("flight02")
+    flight03 = get_seat_data("flight03")
+
+    return render(request, "overview.html", {"flight01": flight01, "flight02": flight02, "flight03": flight03})
 
 
 def checkbox(request):
+    flight_name = HttpRequest.get_full_path(request).removeprefix("/booking/")
     # connect to db
     connection = sqlite3.connect(DATABASES['default']['NAME'])
     cursor = connection.cursor()
 
-    rows = cursor.execute("SELECT MAX(Row) FROM {} ".format("chartIn3")).fetchall()[0][0]
+    rows = cursor.execute("SELECT MAX(Row) FROM {} ".format(flight_name)).fetchall()[0][0]
     # get a list of all the clicked buttons after the submit button is hit
     for i in range(1, rows+1):
         # get a list of all the clicked buttons after the submit button is hit
@@ -48,13 +58,14 @@ def checkbox(request):
                 booked_seat = str(j)
                 # print(booked_row)
                 # print(booked_seat)
-                cursor.execute("""UPDATE {} SET Occupied = TRUE WHERE Row = ? AND Seat = ?"""
-                               .format("chartIn3"), (booked_row, booked_seat))
+                cursor.execute("""UPDATE {} SET Occupied = True, userid = ? WHERE Row = ? AND Seat = ?"""
+                               .format(flight_name), (request.session["userid"], booked_row, booked_seat))
                 # commit the changes to the database
                 connection.commit()
 
     # get data from chartIn3 table
-    data = cursor.execute("SELECT Row, Seat, Occupied FROM {}".format("chartIn3")).fetchall()
+    data = cursor.execute("SELECT Row, Seat, Occupied FROM {}".format(flight_name)).fetchall()
+    connection.close()
 
     # Get list of Occupied Column
     occupied = [item[2] for item in data]
@@ -83,8 +94,6 @@ def checkbox(request):
     # the left seats (the numbers) are only needed to format the grid of buttons (<br> before left seat)
     row_number = seats[::int(len(seats) / rows)]
 
-    connection.close()
-
     try:
         if request.session["username"]:
             logged_in = True
@@ -101,4 +110,3 @@ def checkbox(request):
 
     # gives values defined above to booking.html file
     return render(request, 'booking.html', values)
-
