@@ -6,29 +6,42 @@
 
 {% block styling %}
 <style>
+body {
+  background: url('{% static "Plane.png"%}') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.center {
+  text-align: center;
+  margin-right: 20px;
+  padding: 50px 0;
+}
 .box {
   display: none;
 }
 .booked {
   display: inline-block;
-  width: 20px;
-  height: 20px;
   text-align: center;
   border: 1px solid black;
   background-color: red;
   color: solid black;
-  line-height: 20px;
+  cursor: default;
+}
+.background {
+  background-size: cover;
 }
 label {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   text-align: center;
   border: 1px solid black;
   background-color: white;
   color: solid black;
-  line-height: 20px;
-  cursor: pointer
+  line-height: 25px;
+  cursor: pointer;
 }
 input[type="checkbox"]:checked + label {
   border: 1px solid white;
@@ -39,8 +52,8 @@ input[type="checkbox"]:checked + label {
 {% endblock %}
 
 {% block body %}
-<body id="bg" style="background-image: url('{% static "Website.png"%}');
-background-repeat: no-repeat">
+<body> <!-- class="background" id="bg" style="background-image: url('{% static "Plane1.png"%}');
+background-repeat: no-repeat; center: center fixed"-->
 {% endblock %}
 
 {% block content %}
@@ -50,14 +63,13 @@ background-repeat: no-repeat">
 
 
     {% csrf_token %}
+    <div class="center">
     {% for seat in seats %}
         {% if seat in row_number %}
             {% if seat < 10 %}
                 <br>
-                <br>
               {{seat}}&ensp;&nbsp;
             {% else %}
-                <br>
                 <br>
               {{seat}}&nbsp;
             {% endif %}
@@ -74,7 +86,7 @@ background-repeat: no-repeat">
     {% endfor %}
     <br><br>
     <input type="submit" value="Submit">
-    </form>
+    </div>
 
 {% else %}
     <h2> You are not logged in, login to gain access to this page </h2>
