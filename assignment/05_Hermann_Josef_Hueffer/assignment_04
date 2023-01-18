@@ -1,7 +1,6 @@
 # task 01
 
 
-
 import sys
 
 test_arr = list(range(30))
@@ -10,4 +9,24 @@ sys.stdout.write(f"Original: {test_arr}\n")
 sys.stdout.write(f"Filtered: {str(list(filter(lambda x: x % 2 == 0, test_arr)))}\n")
 
 
+
 # task 02
+
+
+import sys
+std = sys.stdout
+
+
+def remove_long_words(s, n):
+    word_list = s.split()
+    filtered_list = [word for word in word_list if len(word) <= n]
+    return filtered_list
+
+
+sys.stdout.write(str(remove_long_words(str(input("Input a string:")), int(input("Input a max word length:")))))
+
+
+
+# task 03
+
+
