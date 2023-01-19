@@ -1,0 +1,186 @@
+# task 01
+
+
+import sys
+
+test_arr = list(range(30))
+
+sys.stdout.write(f"Original: {test_arr}\n")
+sys.stdout.write(f"Filtered: {str(list(filter(lambda x: x % 2 == 0, test_arr)))}\n")
+
+
+
+# task 02
+
+
+import sys
+std = sys.stdout
+
+
+def remove_long_words(s, n):
+    word_list = s.split()
+    filtered_list = [word for word in word_list if len(word) <= n]
+    return filtered_list
+
+
+sys.stdout.write(str(remove_long_words(str(input("Input a string:")), int(input("Input a max word length:")))))
+
+
+
+# task 03
+
+
+import math
+import unittest
+
+
+def decimal2binary(n):
+    # function to convert decimal integers to binary
+    x = []
+    if n < 0:  # if n is negative, the first value should be negative and all other numbers should be absolutes
+        x.append(-(n % 2))
+        n = math.floor(abs(n) / 2)
+    while n > 0:
+        x.append(n % 2)
+        n = math.floor(n/2)
+    if not x:  # x should at east contain one integer of value 0
+        x = [0]
+    return x[::-1]
+
+
+class ArrayTestCase(unittest.TestCase):
+    def test_positive(self):
+        # Do positive numbers work?
+        self.assertEqual(decimal2binary(1), [1])
+        self.assertEqual(decimal2binary(2), [1, 0])
+        self.assertEqual(decimal2binary(3), [1, 1])
+
+    def test_negative(self):
+        # Do negative numbers work?
+        self.assertEqual(decimal2binary(-1), [-1])
+
+    def test_zero(self):
+        # Does zero work?
+        self.assertEqual(decimal2binary(0), [0])
+
+
+if __name__ == '__main__':
+    unittest.main()
+    
+
+
+# task 04
+
+
+import math
+import unittest
+
+
+def decimal2binary(n):
+    # function to convert decimal integers to binary
+    x = []
+    if n < 0:  # if n is negative, the first value should be negative and all other numbers should be absolutes
+        x.append(-(n % 2))
+        n = math.floor(abs(n) / 2)
+    while n > 0:
+        x.append(n % 2)
+        n = math.floor(n/2)
+    if not x:  # x should at east contain one integer of value 0
+        x = [0]
+    return x[::-1]
+
+
+class ArrayTestCase(unittest.TestCase):
+    def test_positive(self):
+        # Do positive numbers work?
+        self.assertEqual(decimal2binary(1), [1])
+        self.assertEqual(decimal2binary(2), [1, 0])
+        self.assertEqual(decimal2binary(3), [1, 1])
+
+    def test_negative(self):
+        # Do negative numbers work?
+        self.assertEqual(decimal2binary(-1), [-1])
+
+    def test_zero(self):
+        # Does zero work?
+        self.assertEqual(decimal2binary(0), [0])
+
+
+if __name__ == '__main__':
+    unittest.main()
+    
+    
+    
+# task 05
+
+
+
+import logging
+import urllib.request
+
+
+def init_log(file_name, file_mode, level, format, date_format):
+    # Create and configure logger
+    logging.basicConfig(filename=file_name,
+                        format=f'%({date_format})s %({format})s',
+                        filemode=file_mode)
+
+    # Creating an object
+    inner_logger = logging.getLogger()
+
+    match level:
+        case "DEBUG":
+            inner_logger.setLevel(logging.DEBUG)
+        case "INFO":
+            inner_logger.setLevel(logging.INFO)
+        case "WARNING":
+            inner_logger.setLevel(logging.WARNING)
+        case "ERROR":
+            inner_logger.setLevel(logging.ERROR)
+        case "CRITICAL":
+            inner_logger.setLevel(logging.CRITICAL)
+    return inner_logger
+
+
+def open_url(url):
+    try:
+        request_url = urllib.request.urlopen(url)
+        content = request_url.read()
+        string = content.decode('utf-8')
+        print(string[:200])
+    except Exception as e:
+        logger.error(e)
+        print(f"Exception: {e}")
+        print(f"URL: {url}")
+
+
+if __name__ == "__main__":
+    logger = init_log("mylog.txt", "w", "DEBUG", "message", "asctime")
+    open_url(input("Input an URL: "))
+    
+
+
+
+# task 06
+
+
+from task05 import init_log
+import urllib.request
+import os
+
+
+def download_file(url, path, name):
+    try:
+        if url[-4:] == ".txt":
+            urllib.request.urlretrieve(url, path+f"\{name}.txt")
+        else:
+            logger.error("No text file found at given URL, download aborted!")
+    except Exception as e:
+        logger.error(e)
+        print(f"Exception: {e}")
+        print(f"URL: {url}")
+
+
+if __name__ == "__main__":
+    logger = init_log("mylog.txt", "w", "DEBUG", "message", "asctime")
+    download_file("https://ia802707.us.archive.org/1/items/macbeth02264gut/0ws3410.txt", str(os.getcwd()), "Macbeth")

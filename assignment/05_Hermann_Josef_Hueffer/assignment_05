@@ -1,0 +1,115 @@
+# task 01
+
+
+import os
+
+
+def get_speaker_text(text, **kwargs):
+    if "begin" in kwargs.keys():
+        begin_index = len(text) - 1 - text[::-1].index(kwargs["begin"])
+        text = text[begin_index:]
+    if "end" in kwargs.keys():
+        end_index = text.index(kwargs["end"])
+        text = text[:end_index]
+    """ I don´t think you can reliably differentiate Headings and Stage instructions from the rest of the text because
+    some Stage Instructions are written only one line after speaker text. This is why I only added a way for the user
+    to manually enter a begin and end of the text. """
+    return text
+
+
+def normalize_text(text):
+    replaced = (".", ",", ":", ";", "?", "!")
+    normalized = []
+    for i in text:
+        x = i
+        for j in replaced:
+            x = x.replace(j, "")
+        normalized.append(x.lower())
+    return normalized
+
+
+def remove_stopwords(text):
+    with open(os.getcwd().split("\\0")[0] + r"\assignment_05_program_data\eng_stop_words.txt") as f:
+        stop_words = f.read().splitlines()
+    no_stopwords = []
+    for i in text:
+        x = i.split()  # this approach will also do the tokenization
+        for j in x:
+            if j not in stop_words:
+                no_stopwords.append(j)
+
+    return no_stopwords
+    
+    
+    
+    
+    
+# task 02 
+
+
+
+import os
+from task01 import get_speaker_text, normalize_text, remove_stopwords
+from assignment.assignment_05_program_data import utils_ocr
+import csv
+
+macbeth_path = os.getcwd().split("\\0")[0] + r"\assignment_05_program_data\Macbeth.txt"
+new_atlantis_path = os.getcwd().split("\\0")[0] + r"\assignment_05_program_data\NewAtlantis.txt"
+
+with open(macbeth_path) as f:
+    macbeth = f.read().splitlines()
+
+with open(new_atlantis_path) as f:
+    new_atlantis = f.read().splitlines()
+
+macbeth_words = {}
+new_atlantis_words = {}
+
+macbeth = get_speaker_text(macbeth, begin="The Tragedie of Macbeth", end="FINIS. THE TRAGEDIE OF MACBETH.")
+macbeth = normalize_text(macbeth)
+macbeth = [utils_ocr.correct_ocr_errors(line) for line in macbeth]
+macbeth = remove_stopwords(macbeth)
+
+new_atlantis = get_speaker_text(new_atlantis, begin="THE NEW ATLANTIS", end="[The rest was not perfected.]")
+new_atlantis = normalize_text(new_atlantis)
+new_atlantis = remove_stopwords(new_atlantis)
+
+for i in macbeth:
+    if i in macbeth_words.keys():
+        macbeth_words[i] += 1
+    else:
+        macbeth_words[i] = 1
+
+for i in new_atlantis:
+    if i in new_atlantis_words.keys():
+        new_atlantis_words[i] += 1
+    else:
+        new_atlantis_words[i] = 1
+
+macbeth_words = {key: val for key, val in sorted(macbeth_words.items(),
+                                                 key=lambda element: element[1],
+                                                 reverse=True)}
+new_atlantis_words = {key: val for key, val in sorted(new_atlantis_words.items(),
+                                                      key=lambda element: element[1],
+                                                      reverse=True)}
+
+# print(macbeth_words)
+# print(new_atlantis_words)
+frequencies = []
+for i in macbeth_words.keys():
+    frequencies.append([i, macbeth_words[i], 0, macbeth_words[i]])
+existing = [x[0] for x in frequencies]
+for i in new_atlantis_words.keys():
+    if i in existing:
+        index = existing.index(i)
+        frequencies[index][2] = new_atlantis_words[i]
+        frequencies[index][3] += new_atlantis_words[i]
+    else:
+        frequencies.append([i, 0, new_atlantis_words[i], new_atlantis_words[i]])
+
+frequencies = sorted(frequencies, key=lambda x: x[3], reverse=True)
+with open("frequencies.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["word", "Macbeth frequency", "NewAtlantis frequency", "sum of frequencies"])
+    for i in frequencies:
+        writer.writerow([i[0].replace("\'", "").replace("\"", ""), i[1], i[2], i[3]])
