@@ -7,20 +7,24 @@
 
 <h1> These are our current Flights:</h1>
     <br>
+<div style="float:left; margin-left:5%">
 <h2><a href="{% url 'flight01' %}"> Flight 01 </a></h2>
 <pre>
     {{ flight01 }}
 </pre>
-    <br><br>
+</div>
+<div style="float:left; margin-left:5%">
 <h2><a href="{% url 'flight02' %}"> Flight 02 </a></h2>
 <pre>
     {{ flight02 }}
 </pre>
-    <br><br>
+</div>
+<div style="float:left; margin-left:5%">
 <h2><a href="{% url 'flight03' %}"> Flight 03 </a></h2>
 <pre>
     {{ flight03 }}
 </pre>
+</div>
 
 
 {% endblock %}
