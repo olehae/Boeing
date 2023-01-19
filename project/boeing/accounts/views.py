@@ -23,7 +23,7 @@ def SignUpView(request):
                       "email": rawdata['email'],
                       "password": rawdata['password']}
 
-        if rawdata['password']  == rawdata['passwordconfirmation']:
+        if rawdata['password'] == rawdata['passwordconfirmation']:
             global verification_code
             verification_code = hf.send_confirmation_mail(signupdata['email'])
             return HttpResponseRedirect(reverse('emailconfirmation'))
@@ -57,8 +57,7 @@ def LoginView(request):
             request.session["email"] = user[0][3]
             request.session["superuser"] = user[0][4]
             request.session["password"] = user[0][6]
-            request.session.set_expiry(0)
-            print("hello")
+            request.session.set_expiry(0)  # Session expires when the browser is closed
             return HttpResponseRedirect(reverse('home'))
 
     except Exception as e:
