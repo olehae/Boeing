@@ -9,16 +9,18 @@
 {% if logged_in %}
     <h1> Hi {{ username }}!</h1>
     <h2> <a href="{% url 'overview' %}">Our current Flights</a> </h2>
+{% if booked_seats %}
     <h2> Your booked seats: </h2>
 <form action="" method="POST">
     {% csrf_token %}
     {% for seat in booked_seats %}
-        <input type="checkbox" value="{{ seat }}">
+        <input name="{{ seat }}" type="checkbox">
         <label> {{ seat }} </label>
         <br><br>
     {% endfor %}
     <input type="submit" value="Cancel the checked">
 </form>
+{% endif %}
 
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
