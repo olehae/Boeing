@@ -56,8 +56,6 @@ def checkbox(request):
                 # split the strings into row and seat again in order to update their status in the database
                 booked_row = int(i)
                 booked_seat = str(j)
-                # print(booked_row)
-                # print(booked_seat)
                 cursor.execute("""UPDATE {} SET Occupied = True, userid = ? WHERE Row = ? AND Seat = ?"""
                                .format(flight_name), (request.session["userid"], booked_row, booked_seat))
                 # commit the changes to the database
