@@ -53,3 +53,6 @@ def home(request):
         values = {"logged_in": False}
 
     return render(request, "home.html", values)
+
+def help(request):
+    return render(request, "help.html")
