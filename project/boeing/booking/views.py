@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import sqlite3
-from boeing.settings import DATABASES, BASE_DIR
+from boeing.settings import DATABASES
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
 from boeing.helperfunctions import send_booking_mail

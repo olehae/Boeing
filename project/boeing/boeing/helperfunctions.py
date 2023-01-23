@@ -9,6 +9,7 @@ import random
 def dbconnection():
     return sqlite3.connect(DATABASES['default']['NAME'])
 
+
 def setupemailconnection():
     email_sender = 'boeingproject2023@gmail.com'
     email_authcode = 'rzcvcfvbcrhmennl'
@@ -63,29 +64,32 @@ def write_into_db(signupdata):
 
 
 def send_confirmation_mail(email_address):
+    try:
+        email_sender, email_authcode = setupemailconnection()
+        code = random.randint(10000000, 99999999)
 
-    email_sender, email_authcode = setupemailconnection()
-    code = random.randint(10000000, 99999999)
+        # define subject and mail body
+        subject = 'Confirmation Email'
+        body = f"""This is your confirmation email with code {code}"""
 
-    # define subject and mail body
-    subject = 'Confirmation Email'
-    body = f"""This is your confirmation email with code {code}"""
+        # create emailmessage object from emailmassege class and perpare email
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = email_address
+        em['Subject'] = subject
+        em.set_content(body)
 
-    # create emailmessage object from emailmassege class and perpare email
-    em = EmailMessage()
-    em['From'] = email_sender
-    em['To'] = email_address
-    em['Subject'] = subject
-    em.set_content(body)
-    
-    # formatting and sending the email via ssl function
-    context = ssl.create_default_context()
+        # formatting and sending the email via ssl function
+        context = ssl.create_default_context()
 
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
-        smtp.login(email_sender, email_authcode)
-        smtp.sendmail(email_sender, email_address, em.as_string())
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, email_authcode)
+            smtp.sendmail(email_sender, email_address, em.as_string())
 
-    return code
+        return code
+    except Exception as e:
+        print(e)
+        return False
 
 
 def send_booking_mail(email_address, flight_name, booked_seats):
