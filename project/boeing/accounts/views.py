@@ -1,15 +1,11 @@
 from django.shortcuts import render
-import sqlite3
-from boeing.settings import DATABASES
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import boeing.helperfunctions as hf
 
 
-def SignUpView(request):
-
-    hf.setupdbconnection()
-    hf.create_user_database()
+def sign_up_view(request):
+    # hf.create_user_database()
     # delete_table() #just for testing purposes
     # create_superuser() #function to create admin accounts via terminal, rarely used
     rawdata = request.POST
@@ -37,28 +33,22 @@ def SignUpView(request):
 
 
 # logs in the user
-def LoginView(request):
-    hf.setupdbconnection()
+def login_view(request):
+    cursor = hf.dbconnection().cursor()
 
     try:
-        raw_logindata = request.POST
-        global user_login_data
-        user_login_data = {"username": raw_logindata['username'], "password": raw_logindata['password']}
-        is_logged_in = {'isloggedin': hf.check_user_login(user_login_data)}
+        raw_login = request.POST
 
-        if is_logged_in:
-            cursor = sqlite3.connect(DATABASES['default']['NAME']).cursor()
-            user = cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?",
-                                  (raw_logindata['username'], raw_logindata['password'])).fetchall()
-            print(user)
-            request.session["userid"] = user[0][0]
-            request.session["name"] = user[0][1]
-            request.session["username"] = user[0][2]
-            request.session["email"] = user[0][3]
-            request.session["superuser"] = user[0][4]
-            request.session["password"] = user[0][6]
-            request.session.set_expiry(0)  # Session expires when the browser is closed
-            return HttpResponseRedirect(reverse('home'))
+        user = cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?",
+                              (raw_login['username'], raw_login['password'])).fetchall()
+        request.session["userid"] = user[0][0]
+        request.session["name"] = user[0][1]
+        request.session["username"] = user[0][2]
+        request.session["email"] = user[0][3]
+        request.session["superuser"] = user[0][4]
+        request.session["password"] = user[0][5]
+        request.session.set_expiry(0)  # Session expires when the browser is closed
+        return HttpResponseRedirect(reverse('home'))
 
     except Exception as e:
         print(e)
@@ -68,7 +58,7 @@ def LoginView(request):
 
 
 # sends confirmation email and confirms it with user
-def EmailConfirmationView(request):
+def email_confirmation_view(request):
     print(verification_code)
 
     try:
@@ -83,25 +73,14 @@ def EmailConfirmationView(request):
             print("Shit failed")
             return HttpResponseRedirect(reverse('signup'))
 
-    except:
+    except Exception as e:
+        print(e)
         print("no data yet")
         return render(request, "registration/emailconfirmation.html")
 
 
-def LogoutView(request):
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
-    cursor = connection.cursor()
+def logout_view(request):
     try:
-        # sql = "SELECT username from user where isloggedin = 1;"
-        # cursor.execute(sql)
-        # loggedin_user = cursor.fetchall()
-        user = request.session["username"]
-        # connection.commit()
-        print(user)
-
-        # sql = "UPDATE user SET isloggedin = 0 WHERE username = ?;"
-        # cursor.execute(sql, (loggedin_user[0]))
-        # connection.commit()
         del request.session["userid"]
         del request.session["name"]
         del request.session["username"]

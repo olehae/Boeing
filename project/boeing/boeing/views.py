@@ -7,7 +7,6 @@ def home(request):
     try:
         username = request.session["username"]
         flight_names = {"flight01": "Flight 01", "flight02": "Flight 02", "flight03": "Flight 03"}
-        print(request.POST)
 
         # connect to db
         connection = sqlite3.connect(DATABASES['default']['NAME'])
@@ -53,6 +52,7 @@ def home(request):
         values = {"logged_in": False}
 
     return render(request, "home.html", values)
+
 
 def help(request):
     return render(request, "help.html")

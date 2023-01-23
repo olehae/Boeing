@@ -1,7 +1,9 @@
 from django.shortcuts import render
 import sqlite3
 from boeing.settings import DATABASES, BASE_DIR
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseRedirect
+from django.urls import reverse
+from boeing.helperfunctions import send_booking_mail
 # Create your views here.
 
 
@@ -40,6 +42,8 @@ def overview(request):
 
 def checkbox(request):
     flight_name = HttpRequest.get_full_path(request).removeprefix("/booking/")
+    booked_seats = []
+
     # connect to db
     connection = sqlite3.connect(DATABASES['default']['NAME'])
     cursor = connection.cursor()
@@ -58,6 +62,7 @@ def checkbox(request):
                 booked_seat = str(j)
                 cursor.execute("""UPDATE {} SET Occupied = True, userid = ? WHERE Row = ? AND Seat = ?"""
                                .format(flight_name), (request.session["userid"], booked_row, booked_seat))
+                booked_seats.append((booked_row, booked_seat))
                 # commit the changes to the database
                 connection.commit()
 
@@ -96,6 +101,10 @@ def checkbox(request):
         if request.session["username"]:
             logged_in = True
         username = request.session["username"]
+        # send confirmation email if seats were booked
+        if booked_seats:
+            send_booking_mail(request.session['email'], flight_name, booked_seats)
+            return HttpResponseRedirect(reverse('home'))
     except KeyError:
         logged_in = False
         username = None

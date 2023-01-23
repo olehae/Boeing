@@ -6,6 +6,9 @@ import smtplib
 import random
 
 
+def dbconnection():
+    return sqlite3.connect(DATABASES['default']['NAME'])
+
 def setupemailconnection():
     email_sender = 'boeingproject2023@gmail.com'
     email_authcode = 'rzcvcfvbcrhmennl'
@@ -13,83 +16,53 @@ def setupemailconnection():
     return email_sender, email_authcode
 
 
-# setting up the cursor as global variable
-def setupdbconnection():
-    global connection
-    global cursor
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
-    cursor = connection.cursor()
-
-
 # creating the table user if it does not exist yet
 def create_user_database():
+    connection = dbconnection()
+    cursor = connection.cursor()
     sql = "CREATE TABLE IF NOT EXISTS user(" \
           "userid INTEGER PRIMARY KEY, " \
           "name TEXT, " \
           "username TEXT, " \
           "email TEXT, " \
           "superuser INTEGER, " \
-          "isloggedin INTEGER, " \
           "password TEXT)"
     cursor.execute(sql)
     connection.commit()
 
 
-# this function is just for the development and testing process, doesn't have any real use we need
-def delete_table():
-    sql = "DROP table user"
-    cursor.execute(sql)
-    connection.commit()
-
-
 def create_superuser():
-    setupdbconnection()
+    connection = dbconnection()
+    cursor = connection.cursor()
 
     name = input('enter name of superuser : ')
     username = input('enter username of superuser : ')
     email = input('enter email of superuser : ')
     password = input('enter password of superuser : ')
 
-    sql = "INSERT INTO user (name, username, email, password, superuser, isloggedin) VALUES (?, ?, ?, ? , 1, 0)"
+    sql = "INSERT INTO user (name, username, email, password, superuser) VALUES (?, ?, ?, ? , 0)"
     cursor.execute(sql, (name, username, email, password))
     connection.commit()
 
 
 # write the data given by the user into the database and create a new user with that
 def write_into_db(signupdata):
-    sql = "INSERT INTO user (name, username, email, password, superuser, isloggedin) VALUES (?, ?, ?, ? , 0, 1)"
+    connection = dbconnection()
+    cursor = connection.cursor()
+    sql = "INSERT INTO user (name, username, email, password, superuser) VALUES (?, ?, ?, ? , 0)"
 
     try:
         print(signupdata["name"], signupdata['username'], signupdata['email'], signupdata['password'])
         cursor.execute(sql, (signupdata["name"], signupdata['username'], signupdata['email'], signupdata['password']))
         connection.commit()
-        print("Succesfully created user!")
+        print("Successfully created user!")
 
-    except:
+    except Exception as e:
+        print(e)
         print("Creation of user profile failed!")
 
 
-def check_user_login(user_login_data):
-    print(user_login_data)
-    sql = "SELECT * FROM user where username = ? AND password = ?;"  # have to swap primary key to username I guess
-    cursor.execute(sql, (user_login_data['username'], user_login_data['password']))
-
-    current_user = cursor.fetchall()
-
-    if current_user:
-        sql = "UPDATE user SET isloggedin = 1 WHERE username = ?;"
-        cursor.execute(sql, (user_login_data['username'],))
-        print("login succesful")
-        connection.commit()
-
-        return True
-
-    else:
-        print("login failed") # leads back to login page
-        return False
-
-
-def send_confirmation_mail(reveiver_address):
+def send_confirmation_mail(email_address):
 
     email_sender, email_authcode = setupemailconnection()
     code = random.randint(10000000, 99999999)
@@ -101,7 +74,7 @@ def send_confirmation_mail(reveiver_address):
     # create emailmessage object from emailmassege class and perpare email
     em = EmailMessage()
     em['From'] = email_sender
-    em['To'] = reveiver_address
+    em['To'] = email_address
     em['Subject'] = subject
     em.set_content(body)
     
@@ -110,27 +83,31 @@ def send_confirmation_mail(reveiver_address):
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         smtp.login(email_sender, email_authcode)
-        smtp.sendmail(email_sender, reveiver_address, em.as_string())
+        smtp.sendmail(email_sender, email_address, em.as_string())
 
     return code
 
 
-# Get information about currently logged-in user
-class User:
-    def __init__(self):
-        # connect to db
-        connection = sqlite3.connect(DATABASES['default']['NAME'])
-        cursor = connection.cursor()
-        user = cursor.execute("SELECT * FROM user WHERE isloggedin = TRUE").fetchall()
-        if user:
-            self.name = user[0][1]
-            self.username = user[0][1]
-            self.email = user[0][2]
-            self.is_admin = user[0][3]
-            self.is_logged_in = True
-        else:
-            self.is_logged_in = False
+def send_booking_mail(email_address, flight_name, booked_seats):
 
+    email_sender, email_authcode = setupemailconnection()
+    seat_list = ""
+    for i in booked_seats:
+        seat_list += f"- Row: {i[0]}  Seat: {i[1]}\n"
 
-def dbcursor():
-    return sqlite3.connect(DATABASES['default']['NAME']).cursor()
+    # define mail body
+    body = f"""Thank you for booking the following seats on {flight_name}:\n
+{seat_list}\nIf you did not book these seats, you can cancel them by logging into your account."""
+
+    em = EmailMessage()
+    em['From'] = email_sender
+    em['To'] = email_address
+    em['Subject'] = f"Booking Confirmation for {flight_name}"
+    em.set_content(body)
+
+    # formatting and sending the email via ssl function
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(email_sender, email_authcode)
+        smtp.sendmail(email_sender, email_address, em.as_string())
