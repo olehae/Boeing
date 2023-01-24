@@ -22,7 +22,7 @@
 </form>
 {% endif %}
 
-    <p><a href="{% url 'help' %}">Help Page</a></p>
+    <p><a href="{% url 'help' %}#home_page">Help Page</a></p>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
 <p>You are not logged in</p>
@@ -32,7 +32,7 @@
     <br><br>
     <a href="{% url 'overview' %}">Go to overview anyways</a>
     <br><br>
-    <a href="{% url 'help' %}">Help Page</a>
+    <a href="{% url 'help' %}#not_logged_in">Help Page</a>
 
 {% endif %}
 
