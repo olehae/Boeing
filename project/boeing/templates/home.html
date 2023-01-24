@@ -4,28 +4,30 @@
 
 {% block title %}Home{% endblock %}
 
+{% block styling %}
+<style>
+input[type="checkbox"] {
+    display: inline-block;
+    width: 2.5vmin;
+    height: 2.5vmin;
+    border: 1px solid black;
+    line-height: 2.5vmin;
+    cursor: pointer;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
+<div style="position: relative">
+<div style="float:left; margin-left:2%">
 {% if logged_in %}
     <h1> Hi {{ username }}!</h1>
     <h2> <a href="{% url 'overview' %}">Our current Flights</a> </h2>
-{% if booked_seats %}
-    <h2> Your booked seats: </h2>
-<form action="" method="POST">
-    {% csrf_token %}
-    {% for seat in booked_seats %}
-        <input name="{{ seat }}" type="checkbox">
-        <label> {{ seat }} </label>
-        <br><br>
-    {% endfor %}
-    <input type="submit" value="Cancel the checked">
-</form>
-{% endif %}
-
     <p><a href="{% url 'help' %}#home_page">Help Page</a></p>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
-<p>You are not logged in</p>
+    <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a>
     <br><br>
     <a href="{% url 'signup' %}">Sign Up</a>
@@ -33,8 +35,24 @@
     <a href="{% url 'overview' %}">Go to overview anyways</a>
     <br><br>
     <a href="{% url 'help' %}#not_logged_in">Help Page</a>
-
 {% endif %}
+</div>
+
+<div style="float:left; margin-left:2%">
+{% if booked_seats %}
+    <h2> Your booked seats: </h2>
+    <form action="" method="POST">
+    {% csrf_token %}
+    {% for seat in booked_seats %}
+        <input name="{{ seat }}" type="checkbox" class="checkbox">
+        <label> {{ seat }} </label>
+        <br><br>
+    {% endfor %}
+    <input type="submit" value="Cancel the checked">
+    </form>
+{% endif %}
+</div>
+</div>
 
 
 {% endblock %}

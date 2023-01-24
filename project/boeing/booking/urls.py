@@ -8,4 +8,5 @@ urlpatterns = [
     path("flight01", views.checkbox, name="flight01"),
     path("flight02", views.checkbox, name="flight02"),
     path("flight03", views.checkbox, name="flight03"),
+    path("flight04", views.checkbox, name="flight04"),
 ]

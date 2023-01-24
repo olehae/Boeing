@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from os import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,11 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-asn6p^gm2)970$-a_a1cpfccxg^z)3=j=fv#gwop!ogw!!2rv1'
-SECRET_KEY = environ.get('DJANGO_SECRET_KEY', 'django-insecure-asn6p^gm2)970$-a_a1cpfccxg^z)3=j=fv#gwop!ogw!!2rv1')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-asn6p^gm2)970$-a_a1cpfccxg^z)3=j=fv#gwop!ogw!!2rv1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = []
 
@@ -34,12 +34,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # we do not use this, but it can not be deleted
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions',  # sessions are used for saving username, email, etc. of current user
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # all images are saved and loaded as static files
     'accounts',  # accounts is not builtin, it was created as a new app
     'booking.apps.BookingConfig',  # booking is also a manually created app
 
@@ -122,6 +121,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # path of static folder
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

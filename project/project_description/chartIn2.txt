@@ -1,4 +1,4 @@
-	A	B	X	X	E	X
+	A	B	C	D	E	F
 1	A	B	X	X	E	X
 2	X	X	C	X	X	F
 3	X	B	X	D	X	X
