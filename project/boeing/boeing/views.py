@@ -6,7 +6,8 @@ from boeing.settings import DATABASES
 def home(request):
     try:
         username = request.session["username"]
-        flight_names = {"flight01": "Flight 01", "flight02": "Flight 02", "flight03": "Flight 03"}
+        flight_names = {"flight01": "Flight 01", "flight02": "Flight 02",
+                        "flight03": "Flight 03", "flight04": "Flight 04"}
 
         # connect to db
         connection = sqlite3.connect(DATABASES['default']['NAME'])
@@ -56,3 +57,7 @@ def home(request):
 
 def help(request):
     return render(request, "help.html")
+
+
+def admin(request):
+    return render(request, "admin.html")

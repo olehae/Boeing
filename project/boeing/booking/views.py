@@ -25,7 +25,7 @@ def get_seat_data(table_name):
         if elem[1] == middle:
             output_str += " | | "
         if elem[2]:
-            output_str += "   "
+            output_str += " X "
         else:
             output_str += f" {elem[1]} "
 
@@ -36,8 +36,10 @@ def overview(request):
     flight01 = get_seat_data("flight01")
     flight02 = get_seat_data("flight02")
     flight03 = get_seat_data("flight03")
+    flight04 = get_seat_data("flight04")
 
-    return render(request, "overview.html", {"flight01": flight01, "flight02": flight02, "flight03": flight03})
+    return render(request, "overview.html", {"flight01": flight01, "flight02": flight02,
+                                             "flight03": flight03, "flight04": flight04})
 
 
 def checkbox(request):
