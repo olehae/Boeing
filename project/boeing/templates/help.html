@@ -1,23 +1,29 @@
 <!-- templates/help.html -->
 {% extends 'base.html' %}
+
+<!-- get the pictures needed for the help page-->
 {% load static %}
 
 {% block title %}Help{% endblock %}
 
 {% block content %}
+
+
 <a href="{% url 'home' %}">Home</a>
 <br><br>
 
 <h1>How can I help you {{ username }}?</h1>
 <br><br>
 
+<!-- These are the paragraphs for all webpages; each has an id for precise accessibility, a picture and further information and links-->
 <div id="not_logged_in">
 <h2>Homepage (but not logged in):</h2>
 <img src="{% static 'not_logged_in3.jpg' %}" alt="picture of the home page (not logged in)"/>
-<ul>
+<ul style="font-size: 15px;">
     <li>If you already have an account, click <a href="{% url 'login' %}">here</a> to log in <strong>or</strong> go to <a href="{% url 'home' %}">Home</a> and click 'Log In' (orange)</li>
     <li>If you don't have an account, click <a href="{% url 'signup' %}">here</a> to sign up <strong>or</strong> go to <a href="{% url 'home' %}">Home</a> and click 'Sign UP' (green)</li>
-    <li>If you only want to get an overview over the available planes and seats, but don't wish to reserve any seats, click <a href="{% url 'overview' %}">here</a> <strong>or</strong> go to <a href="{% url 'home' %}">Home</a> and click 'Go to overview anyways' (purple)</li>
+    <li>If you only want to get an overview over the available planes and seats, but don't wish to reserve any seats,
+        click <a href="{% url 'overview' %}">here</a> <strong>or</strong> go to <a href="{% url 'home' %}">Home</a> and click 'Go to overview anyways' (purple)</li>
 </ul>
 </div>
 <br><br>
@@ -25,7 +31,7 @@
 <div id="home_page">
 <h2>Homepage (and logged in):</h2>
 <img src="{% static 'home.jpg' %}" alt="picture of the home page"/>
-<ul about="Actions">
+<ul style="font-size: 15px;">
     <li>If you want to reserve seats, click <a href="{% url 'overview' %}">here</a> <strong>or</strong> go to <a href="{% url 'home' %}">Home</a> and click 'Our current flights' (orange)</li>
     <li>If you want to cancel reserved seats, go to <a href="{% url 'home' %}">Home</a>, then click on the boxes of those seats (blue) to select them and click 'Cancel to checked' (purple)</li>
 </ul>
@@ -35,9 +41,9 @@
 <div id="overview">
 <h2>Overview:</h2>
 <img src="{% static 'overview.jpg' %}" alt="picture of the overview page">
-<ul>
+<ul style="font-size: 15px;">
     <li>This page shows available seats: Seat 1A is no longer available in this example (red arrow), but all the others are</li>
-    <li>If you want to reserve a seat now, you may click on one of the flights (e.g. Flight 01); this will only work, while you are logged in</li>
+    <li>If you want to reserve a seat now, you may go back to <a href="{% url 'overview' %}">Overview</a> and click on one of the flights (e.g. Flight 01); <strong>this will only work, while you are logged in</strong></li>
     <li>If you aren't logged in and want to change that, go to <a href="{% url 'login' %}">Log In</a></li>
 </ul>
 </div>
@@ -46,7 +52,7 @@
 <div id="flight">
 <h2>Flight/ seat reservation:</h2>
 <img src="{% static 'Flight3.jpg' %}" alt="picture of seat reservation"><img src="{% static 'Flight_Submit.jpg' %}" alt="picture of the submit button for seat reservation">
-<ul>
+<ul style="font-size: 15px;">
     <li>This is the page for seat reservation</li>
     <li>To select a seat, click on it (orange)</li>
     <li>Afterwards, you may either select more seats, or click the 'submit'-button (green) to reserve the selected seat(s)</li>
@@ -58,7 +64,7 @@
 <div id="flight_anyways">
 <h2>Flight/ seat reservation (not available without login):</h2>
 <img src="{% static 'flight_anyways2.png' %}" alt="picture of a plane, no seats showing">
-<ul>
+<ul style="font-size: 15px;">
     <li>Click <a href="{% url 'login' %}">here</a> to log in</li>
     <li>Or click <a href="{% url 'home' %}">here</a> to return to the homepage</li>
 </ul>
