@@ -1,8 +1,8 @@
-# pdsw22_Boeing
+# Python for Data Science - Boeing
 
 ## Airline Seat Reservation
 This project is part of the course "Programming for Data Scientists: Python" by 
-[Gipp Lab](https://gipplab.org/)
+[Gipp Lab](https://gipplab.org/) at the University of Göttingen.
 
 
 ## Motivation
@@ -13,7 +13,9 @@ The goal of this project is to implement a seat reservation system for an airpla
 
 
 ## Features
-Despite the basic requirements this seat reservation can do things such as:
+Despite the basic requirements given in the 
+[Project Description](project/project_description/Project_Description_ASR.pdf), 
+this seat reservation can do things such as:
 - Enabling users to sign up and log in via web-interface
 - Using Email confirmation codes to sign up new users
 - Enabling users to book seats by selecting them from a graphic representation of the planes seat layout
@@ -26,6 +28,36 @@ _to do_
 ```
 Added to TEMPLATE list in settings.py to enable working with a template folder for html files
 
+```Python
+user = cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?", 
+                     (request.POST['username'], 
+                     sha512(str(request.POST["password"]).encode('utf-8')).hexdigest())).fetchall()
+request.session["userid"] = user[0][0]
+request.session["name"] = user[0][1]
+request.session["username"] = user[0][2]
+request.session["email"] = user[0][3]
+request.session["superuser"] = user[0][4]
+request.session.set_expiry(0)  # Session expires when the browser is closed
+```
+Log in user by comparing given username and sha512 sum of given password to the user table in the database.
+Important Information about the currently logged-in user is stored in Django´s built-in session framework.
+The current session ends if either the user logs out via log out button or the browser is closed.
+
+```Python
+output_str = ""
+for elem in seats:
+    if elem[1] == "A":
+        output_str += f"\n{elem[0]}\t"
+    if elem[1] == middle:
+        output_str += " | | "
+    if elem[2]:
+        output_str += " X "
+    else:
+        output_str += f" {elem[1]} "
+```
+Formatting the seats into a string that is displayed on the overview page. In this example every elem is a list with 
+the attributes of an individual seat. elem[0] represents the row, elem[1] is the letter and elem[3] is the booking status.
+
 ## Installation
 - Make sure that django and sqlite3 is installed to your environment and your environment is activated
 - Go to project/boeing/ in your shell and do:
@@ -37,4 +69,5 @@ python manage.py runserver
 
 
 ## License
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use news-please except in compliance with the License. A copy of the License is included in the project, see the file [LICENSE](LICENSE).
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use news-please except in compliance 
+with the License. A copy of the License is included in the project, see the file [LICENSE](LICENSE).
