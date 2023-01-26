@@ -21,14 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-asn6p^gm2)970$-a_a1cpfccxg^z)3=j=fv#gwop!ogw!!2rv1'
+# get the SECRET_KEY variable from an environment variable, if the variable is not given
+# (this is the case in development), the SECRET_KEY is set to a default value specified below
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-asn6p^gm2)970$-a_a1cpfccxg^z)3=j=fv#gwop!ogw!!2rv1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+# get the DEBUG variable from an environment variable, if the variable is not given (this is the case in development),
+# DEBUG is set to True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+# this site is allowed to be hosted on either of these addresses
+ALLOWED_HOSTS = ['olehae.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
@@ -40,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',  # all images are saved and loaded as static files
     'accounts',  # accounts is not builtin, it was created as a new app
-    'booking.apps.BookingConfig',  # booking is also a manually created app
+    'booking',  # booking is also a manually created app
 
 ]
 
@@ -123,6 +126,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # path of static folder
+print(STATIC_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

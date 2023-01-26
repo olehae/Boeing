@@ -3,33 +3,8 @@ import sqlite3
 from boeing.settings import DATABASES
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
-from boeing.helperfunctions import send_booking_mail
+from boeing.helperfunctions import send_booking_mail, get_seat_data
 # Create your views here.
-
-
-# get data from table
-def get_seat_data(table_name):
-    # connect to db
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
-    cursor = connection.cursor()
-    seats = cursor.execute("SELECT * FROM {}".format(table_name)).fetchall()
-    connection.close()
-    seat_set = list(set([i[1] for i in seats]))
-    seat_set.sort()
-    middle = seat_set[len(seat_set)//2]
-
-    output_str = ""
-    for elem in seats:
-        if elem[1] == "A":
-            output_str += f"\n{elem[0]}\t"
-        if elem[1] == middle:
-            output_str += " | | "
-        if elem[2]:
-            output_str += " X "
-        else:
-            output_str += f" {elem[1]} "
-
-    return output_str
 
 
 def overview(request):
@@ -79,9 +54,10 @@ def checkbox(request):
     one_row = list(set(seat_char))
     one_row.sort()
     right_middle_seats = one_row[len(one_row)//2]
-    left_middle_seats = one_row[(len(one_row)//2)-1]
-    middle_seats = left_middle_seats+right_middle_seats
-    window_seats = [one_row[0], one_row[-1]]
+    # These might be of use but are not needed right now
+    # left_middle_seats = one_row[(len(one_row)//2)-1]
+    # middle_seats = left_middle_seats+right_middle_seats
+    # window_seats = [one_row[0], one_row[-1]]
     seats = []
     row_counter = 1
     for i, seat in enumerate(seat_char):
@@ -90,7 +66,7 @@ def checkbox(request):
             row_counter += 1
         if seat == right_middle_seats:
             seats.append("middle")
-
+        # append x if seat is occupied, else append seat
         if occupied[i]:
             seats.append(str("X"))
         else:
@@ -100,13 +76,15 @@ def checkbox(request):
     row_number = seats[::int(len(seats) / rows)]
 
     try:
+        # set logged_in = True if a username exists in the current session
         if request.session["username"]:
             logged_in = True
         username = request.session["username"]
         # send confirmation email if seats were booked
         if booked_seats:
             send_booking_mail(request.session['email'], flight_name, booked_seats)
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('home'))  # redirect to home if seats were booked
+    # KeyError occurs when username does not exist in current session -> no user is logged in
     except KeyError:
         logged_in = False
         username = None
@@ -114,8 +92,9 @@ def checkbox(request):
               "row_number": row_number,
               "logged_in": logged_in,
               "username": username,
-              "middle_seats": middle_seats,
-              "window_seats": window_seats}
+              }
+    # "middle_seats": middle_seats  can be added to values if needed
+    # "window_seats": window_seats  can be added to values if needed
 
     # gives values defined above to booking.html file
     return render(request, 'booking.html', values)

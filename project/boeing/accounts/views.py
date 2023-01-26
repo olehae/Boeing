@@ -19,8 +19,8 @@ def sign_up_view(request):
         all_emails = [i[0] for i in cursor.execute("SELECT email FROM user").fetchall()]
         if request.POST["email"] in all_emails:
             return render(request, "registration/signup.html",
-                      {"error": "This email already exists, please try to log in to your existing account or create a \
-                      new account with a different email"})
+                          {"error": "This email already exists, please try to log in to your existing account \
+                          or create a new account with a different email"})
 
         elif str(request.POST['password']) == str(request.POST['passwordconfirmation']):
             # send email with confirmation code

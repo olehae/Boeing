@@ -1,3 +1,4 @@
+# This file contains all functions that are called from the various views functions
 import sqlite3
 from boeing.settings import DATABASES
 from email.message import EmailMessage
@@ -115,3 +116,28 @@ def send_booking_mail(email_address, flight_name, booked_seats):
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         smtp.login(email_sender, email_authcode)
         smtp.sendmail(email_sender, email_address, em.as_string())
+
+
+# get data from table
+def get_seat_data(table_name):
+    # connect to db
+    connection = sqlite3.connect(DATABASES['default']['NAME'])
+    cursor = connection.cursor()
+    seats = cursor.execute("SELECT * FROM {}".format(table_name)).fetchall()
+    connection.close()
+    seat_set = list(set([i[1] for i in seats]))
+    seat_set.sort()
+    middle = seat_set[len(seat_set)//2]
+
+    output_str = ""
+    for elem in seats:
+        if elem[1] == "A":
+            output_str += f"\n{elem[0]}\t"
+        if elem[1] == middle:
+            output_str += " | | "
+        if elem[2]:
+            output_str += " X "
+        else:
+            output_str += f" {elem[1]} "
+
+    return output_str

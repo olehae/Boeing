@@ -1,6 +1,4 @@
-"""
-I created this file manually, it is used to define urlpatterns within the accounts/ path
-"""
+# I created this file manually, it is used to define urlpatterns within the accounts/ path
 
 from django.urls import path
 from . import views

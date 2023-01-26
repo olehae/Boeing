@@ -1,8 +1,8 @@
+# I created this file manually, it is used to define urlpatterns within the booking/ path
+
 from django.urls import path
 from . import views
-from django.http import HttpResponse
 
-# URL Configuration
 urlpatterns = [
     path("", views.overview, name="overview"),
     path("flight01", views.checkbox, name="flight01"),
