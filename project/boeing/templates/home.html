@@ -20,23 +20,29 @@ input[type="checkbox"] {
 {% block content %}
 
 <div style="position: relative">
-<div style="float:left; margin-left:2%">
 {% if logged_in %}
-    <h1> Hi {{ username }}!</h1>
+    <div style="float: left; margin-left: 2%">
     <p><a href="{% url 'help' %}#home_page">Help Page</a></p>
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
-    <h2> <a href="{% url 'overview' %}">Our current flights</a> </h2>
+    <p><a href="{% url 'logout' %}">Log Out</a></p><br>
+    </div>
+    <div style="float: left; margin-left: 30%">
+      <h1> Hi {{ username }}!</h1><br>
+      <p></p>
+      <h2 style="font-size: 200%; margin-left: -13%"> <a href="{% url 'overview' %}">Our current flights</a> </h2>
+    </div>
 {% else %}
-    <p>You are not logged in</p>
+    <div style="float: left; margin-left: 2%">
     <a href="{% url 'login' %}">Log In</a>
     <br><br>
     <a href="{% url 'signup' %}">Sign Up</a>
     <br><br>
     <a href="{% url 'help' %}#not_logged_in">Help Page</a>
     <br><br>
-    <h2> <a href="{% url 'overview' %}">See current flights anyways</a> </h2>
+    </div>
+    <div style="float: left; margin-left: 30%">
+      <h1>You are not logged in</h1>
+    </div>
 {% endif %}
-</div>
 <div style="float:right; margin-right:2%">
 {% if booked_seats %}
     <h2> Your booked seats: </h2>
