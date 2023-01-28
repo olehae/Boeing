@@ -23,6 +23,7 @@ input[type="checkbox"] {
 {% if logged_in %}
     <div style="float: left; margin-left: 2%">
     <p><a href="{% url 'help' %}#home_page">Help Page</a></p>
+<<<<<<< HEAD
     <p><a href="{% url 'logout' %}">Log Out</a></p><br>
     </div>
     <div style="float: left; margin-left: 30%">
@@ -30,6 +31,13 @@ input[type="checkbox"] {
       <p></p>
       <h2 style="font-size: 200%; margin-left: -13%"> <a href="{% url 'overview' %}">Our current flights</a> </h2>
     </div>
+=======
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+    {% if is_superuser %}
+        <p><a href="{% url 'admin' %}">Admin</a></p>
+    {% endif %}
+    <h2> <a href="{% url 'overview' %}">Our current flights</a> </h2>
+>>>>>>> e28ab4adbf7dcd98237b97df4a561432c0e95dcf
 {% else %}
     <div style="float: left; margin-left: 2%">
     <a href="{% url 'login' %}">Log In</a>
