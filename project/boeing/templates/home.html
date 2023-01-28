@@ -25,6 +25,9 @@ input[type="checkbox"] {
     <h1> Hi {{ username }}!</h1>
     <p><a href="{% url 'help' %}#home_page">Help Page</a></p>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
+    {% if is_superuser %}
+        <p><a href="{% url 'admin' %}">Admin</a></p>
+    {% endif %}
     <h2> <a href="{% url 'overview' %}">Our current flights</a> </h2>
 {% else %}
     <p>You are not logged in</p>

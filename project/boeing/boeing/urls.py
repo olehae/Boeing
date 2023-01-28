@@ -22,5 +22,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),  # include our own accounts app in accounts/ path
     path("booking/", include("booking.urls")),  # path booking/ redirects to the booking apps urls file
     path("help/", views.help, name="help"),  # help page
-    path("admin/", views.admin, name="admin")  # admin page
+    path("admin/", views.admin, name="admin"),  # admin page
+    path("printstats/", views.print_stats)  # button for printing stats into text file
 ]

@@ -6,6 +6,17 @@
 
 {% block content %}
 
+<a href="{% url 'home' %}">Home</a>
+<br>
 <h1>Hi Admin!</h1>
+<table>
+    <tr> <td> Seats available: </td> <td> {{available}} </td> <td> ... </td> <td> {{available_perc}}% </td> </tr>
+    <tr> <td> Seats reserved: </td> <td> {{occupied}} </td> <td> ... </td> <td> {{occupied_perc}}% </td> </tr>
+    <tr> <td> User number: </td> <td> {{user_count}} </td> </tr>
+</table>
+
+<form action="/printstats">
+    <button id="stat_btn" class="btn"> Print to text file </button>
+</form>
 
 {% endblock %}
