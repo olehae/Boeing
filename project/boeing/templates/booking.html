@@ -60,7 +60,7 @@ input[type="checkbox"]:checked + label {
 {% block content %}
 
 {% if logged_in %}
-  Hi {{ username }}!
+  <div style="font-size: 120%">Hi {{ username }}!</div> 
   <div style="position: relative">
     <div style="float: left">
       <a href="{% url 'overview' %}">Overview</a>

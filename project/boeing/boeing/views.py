@@ -1,13 +1,14 @@
 import sqlite3
 from django.shortcuts import render
 from boeing.settings import DATABASES
+from boeing.helperfunctions import get_seat_data
 
 
 def home(request):
     try:
         username = request.session["username"]
-        flight_names = {"flight01": "Flight 01", "flight02": "Flight 02",
-                        "flight03": "Flight 03", "flight04": "Flight 04"}
+        flight_names = {"flight01": "Berlin - Palma de Mallorca", "flight02": "Hannover - Ibiza",
+                        "flight03": "Frankfurt - Paris", "flight04": "Hammensted - Dubai"}
 
         # connect to db
         connection = sqlite3.connect(DATABASES['default']['NAME'])
@@ -36,8 +37,19 @@ def home(request):
             user_data = cursor.execute("SELECT Row, Seat FROM {} WHERE Userid = ?"
                                        .format(name), (request.session["userid"],)).fetchall()
             # Save flight name, row and seat into one String to make html part easier
+            not_needed, one_row = get_seat_data(name)
+            left_aisle_seats = one_row[(len(one_row)//2)-1]
+            right_aisle_seats = one_row[len(one_row)//2]
+            aisle_seats = left_aisle_seats+right_aisle_seats
+            window_seats = [one_row[0], one_row[-1]]
             for i in user_data:
-                seat = str(flight_names[name]) + ", Row " + str(i[0]) + ", Seat " + str(i[1])
+                if i[1] in aisle_seats:
+                    seat_type = "aisle seat"
+                elif i[1] in window_seats:
+                    seat_type = "window seat"
+                else:
+                    seat_type = "middle seat"
+                seat = str(flight_names[name]) + ", Row " + str(i[0]) + ", Seat " + str(i[1] + ", Seat type: " + seat_type)
                 booked_seats.append(seat)
         # close db connection
         connection.close()

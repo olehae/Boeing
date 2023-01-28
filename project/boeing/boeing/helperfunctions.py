@@ -140,4 +140,4 @@ def get_seat_data(table_name):
         else:
             output_str += f" {elem[1]} "
 
-    return output_str
+    return output_str, seat_set

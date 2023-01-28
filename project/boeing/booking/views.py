@@ -8,10 +8,10 @@ from boeing.helperfunctions import send_booking_mail, get_seat_data
 
 
 def overview(request):
-    flight01 = get_seat_data("flight01")
-    flight02 = get_seat_data("flight02")
-    flight03 = get_seat_data("flight03")
-    flight04 = get_seat_data("flight04")
+    flight01, not_needed = get_seat_data("flight01")
+    flight02, not_needed= get_seat_data("flight02")
+    flight03, not_needed = get_seat_data("flight03")
+    flight04, not_needed = get_seat_data("flight04")
 
     return render(request, "overview.html", {"flight01": flight01, "flight02": flight02,
                                              "flight03": flight03, "flight04": flight04})
@@ -42,7 +42,6 @@ def checkbox(request):
                 booked_seats.append((booked_row, booked_seat))
                 # commit the changes to the database
                 connection.commit()
-
     # get data from chartIn3 table
     data = cursor.execute("SELECT Row, Seat, Occupied FROM {}".format(flight_name)).fetchall()
     connection.close()
