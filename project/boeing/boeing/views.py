@@ -1,17 +1,16 @@
-import sqlite3
 from django.shortcuts import render
-from boeing.settings import DATABASES
-from boeing.helperfunctions import get_seat_data
+from boeing.helperfunctions import dbconnection, get_seat_data, get_flights, print_stats
+from django.http import HttpResponse, HttpResponseNotFound
+import plotly
 
 
 def home(request):
-    try:
+    if "username" in request.session.keys():
         username = request.session["username"]
-        flight_names = {"flight01": "Berlin - Palma de Mallorca", "flight02": "Hannover - Ibiza",
-                        "flight03": "Frankfurt - Paris", "flight04": "Hammensted - Dubai"}
+        flight_names = get_flights()
 
         # connect to db
-        connection = sqlite3.connect(DATABASES['default']['NAME'])
+        connection = dbconnection()
         cursor = connection.cursor()
 
         for key in request.POST.keys():
@@ -61,8 +60,8 @@ def home(request):
                   "booked_seats": booked_seats,
                   "is_superuser": request.session["superuser"]}
 
-    # a KeyError occurs when request.session["username"] does not exist -> no user is logged in
-    except KeyError:
+    # when request.session["username"] does not exist -> no user is logged in
+    else:
         # if logged_in is False, the html template will not need the other values
         values = {"logged_in": False}
 
@@ -74,14 +73,26 @@ def help(request):
 
 
 def admin(request):
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
+    # only allow admins (superusers) to open this page
+    if "superuser" in request.session.keys() and request.session["superuser"]:
+        pass
+    else:
+        return HttpResponseNotFound()
+    # check if download button has been clicked
+    if "stats" in request.POST.keys():
+        print_stats()
+        response = HttpResponse(open("stats.txt", 'rb').read())
+        response['Content-Type'] = 'text/plain'
+        response['Content-Disposition'] = 'attachment; filename=boeing_stats.txt'
+        return response
+    connection = dbconnection()
     cursor = connection.cursor()
 
     sum_all = 0
     sum_available = 0
-    allFlightTables = ["flight01", "flight02", "flight03", "flight04"]
+    all_flight_tables = get_flights().keys()
     # For every flight table
-    for table in allFlightTables:
+    for table in all_flight_tables:
         # Gets flight table
         seat_list = cursor.execute("SELECT Occupied FROM {}".format(table)).fetchall()
 
@@ -99,79 +110,28 @@ def admin(request):
     users = cursor.execute("SELECT userid FROM user").fetchall()
     user_count = len(users)
 
+    graphs = []
+    for flight in get_flights().keys():
+        # get data from tables
+        data = cursor.execute("SELECT Occupied from {}".format(flight)).fetchall()
+        data = [i[0] for i in data]
+        print(len([i for i in data if i]), len([i for i in data if not i]))
+        values = [len([i for i in data if i]), len([i for i in data if not i])]
+        # plotting the pie chart
+        fig = plotly.graph_objs.Figure()
+        fig.add_trace(plotly.graph_objs.Pie(labels=["Booked", "Available"], values=values, sort=False))
+        fig.update_layout(title=str(flight + ": " + get_flights()[flight]))
+        # add pie chart object to graphs list
+        graphs.append(plotly.offline.plot(fig, auto_open=False, output_type="div"))
+
     values = {
         "available": sum_available,
         "available_perc": str(100*sum_available/sum_all)[:5],
         "occupied": sum_all - sum_available,
         "occupied_perc": str(100*(sum_all - sum_available)/sum_all)[:5],
-        "user_count": user_count
+        "user_count": user_count,
+        "graphs": graphs,
     }
 
     connection.close()
     return render(request, "admin.html", values)
-
-
-# Is called on button click to print stats to text  file
-def print_stats(request):
-    # Creates new text file and emties it
-    text_file = open("stats.txt", 'w')
-    text_file.write("")
-    text_file.close()
-    # Opens the created file
-    text_file = open("stats.txt", 'a')
-
-    # Database connection
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
-    cursor = connection.cursor()
-
-    # Get user data
-    users = cursor.execute("SELECT * FROM user").fetchall()
-
-    # Write user data to text file
-    text_file.write("User number: " + str(len(users)) + "\n")
-    text_file.write("UserID\tName\t\tUsername\tE-mail\t\t\t\t\tSuperuser\n\n")
-    for user in users:
-        # Doesn't print the password
-        for i in range(len(user) - 1):
-            text_file.write(str(user[i]))
-            # Indents the lines
-            indent = 0
-            if i == 0 or i == 4:
-                indent = 8
-            elif i == 1 or i == 2:
-                indent = 16
-            else:
-                indent = 40
-            for i in range(indent - len(str(user[i]))):
-                text_file.write(" ")
-        text_file.write("\n")
-    text_file.write("\n")
-
-    # Get seat data
-    all_flight_tables = ["flight01", "flight02", "flight03", "flight04"]
-    available_seats = []
-    occupied_seats = []
-
-    # For every flight
-    for table in all_flight_tables:
-        # Print available
-        text_file.write(table + " AVAILABLE\n")
-        text_file.write("Row\tSeat\n")
-        available_seats = cursor.execute("SELECT Row, Seat FROM {} WHERE Occupied is FALSE".format(table)).fetchall()
-        for seat in available_seats:
-            text_file.write(str(seat[0]) + "\t" + str(seat[1]) + "\n")
-        text_file.write("\n")
-
-        # Print occupied
-        text_file.write(table + " OCCUPIED\n")
-        text_file.write("Row\tSeat\tUserID\n")
-        occupied_seats = cursor.execute("SELECT Row, Seat, Userid FROM {} WHERE Occupied is TRUE".format(table)).fetchall()
-        for seat in occupied_seats:
-            text_file.write(str(seat[0]) + "\t" + str(seat[1]) + "\t" + str(seat[2]) + "\n")
-        text_file.write("\n")
-
-    text_file.write("Available seats:\n")
-
-    connection.close()
-    # Stays on admin page
-    return admin(request)

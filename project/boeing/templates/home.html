@@ -14,6 +14,9 @@ input[type="checkbox"] {
     line-height: 2.5vmin;
     cursor: pointer;
 }
+input[type="submit"] {
+    cursor: pointer;
+}
 </style>
 {% endblock %}
 
@@ -30,7 +33,7 @@ input[type="checkbox"] {
     </div>
     <div style="float: left; margin-left: 30%">
       <h1> Hi {{ username }}!</h1>
-      <p style="font-size: 120%; margin-left: -20%">What is todays destination goint to be?</p><br>
+      <p style="font-size: 120%; margin-left: -20%">What is todays destination going to be?</p><br>
       <h2 style="font-size: 200%; margin-left: -13%"> <a href="{% url 'overview' %}">Our current flights</a> </h2>
     </div>
 {% else %}
@@ -43,7 +46,9 @@ input[type="checkbox"] {
     <br><br>
     </div>
     <div style="float: left; margin-left: 30%">
-      <h1>You are not logged in</h1>
+        <h1>Welcome to our Airline Seat Reservation</h1>
+        <h2>You are not logged in</h2>
+        <h3> <a href="{% url 'overview' %}">Our current flights</a> </h3>
     </div>
 {% endif %}
 <div style="float:right; margin-right:2%">
@@ -56,7 +61,8 @@ input[type="checkbox"] {
         <label> {{ seat }} </label>
         <br><br>
     {% endfor %}
-    <input type="submit" value="Cancel the checked">
+    <input type="submit" value="Cancel the checked"
+           onclick="return confirm('Are you sure you want to cancel the selected seats?')">
     </form>
 {% endif %}
 </div>

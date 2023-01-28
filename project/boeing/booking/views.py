@@ -1,20 +1,21 @@
 from django.shortcuts import render
-import sqlite3
-from boeing.settings import DATABASES
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import reverse
-from boeing.helperfunctions import send_booking_mail, get_seat_data
+from boeing.helperfunctions import dbconnection, send_booking_mail, get_seat_data, get_flights
 # Create your views here.
 
 
-def overview(request):
-    flight01, not_needed = get_seat_data("flight01")
-    flight02, not_needed= get_seat_data("flight02")
-    flight03, not_needed = get_seat_data("flight03")
-    flight04, not_needed = get_seat_data("flight04")
+class Flight:
+    def __init__(self, name, route, data):
+        self.name = name
+        self.route = route
+        self.data = data
 
-    return render(request, "overview.html", {"flight01": flight01, "flight02": flight02,
-                                             "flight03": flight03, "flight04": flight04})
+
+def overview(request):
+    flights = [Flight(i, get_flights()[i], get_seat_data(i)[0]) for i in get_flights().keys()]
+
+    return render(request, "overview.html", {"flights": flights})
 
 
 def checkbox(request):
@@ -22,7 +23,7 @@ def checkbox(request):
     booked_seats = []
 
     # connect to db
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
+    connection = dbconnection()
     cursor = connection.cursor()
 
     rows = cursor.execute("SELECT MAX(Row) FROM {} ".format(flight_name)).fetchall()[0][0]

@@ -3,7 +3,17 @@
 {% extends 'base.html' %}
 
 {% block title %}Admin{% endblock %}
-
+{% block styling %}
+<style>
+.btn:hover {
+    cursor: pointer;
+}
+.graph {
+    float: left;
+    margin-left: 2%
+}
+</style>
+{% endblock %}
 {% block content %}
 
 <a href="{% url 'home' %}">Home</a>
@@ -15,8 +25,17 @@
     <tr> <td> User number: </td> <td> {{user_count}} </td> </tr>
 </table>
 
-<form action="/printstats">
-    <button id="stat_btn" class="btn"> Print to text file </button>
+<form action="" method="POST">
+    {% csrf_token %}
+    <button name="stats" class="btn"> Download text file </button>
 </form>
+<br>
+{% for graph in graphs %}
+    {% autoescape off %}
+    <div class="graph">
+    {{ graph }}
+    </div>
+    {% endautoescape %}
+{% endfor %}
 
 {% endblock %}

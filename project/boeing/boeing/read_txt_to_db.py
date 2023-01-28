@@ -4,15 +4,14 @@ import sqlite3
 from settings import BASE_DIR, DATABASES
 
 
-def init_table(table, source):
+def init_table(table, route, source):
     # connect to database
     connection = sqlite3.connect(DATABASES['default']['NAME'])
     cursor = connection.cursor()
 
     # check if table already exists (to avoid adding to an existing table)
-    table_list = cursor.execute("""SELECT name FROM sqlite_master
-                                WHERE type='table' AND name='{}'""".format(table)).fetchall()
-    if table_list:
+    table_list = cursor.execute("SELECT flight_name FROM flights").fetchall()
+    if table in [i[0] for i in table_list]:
         print("This table already exists!")
         return
 
@@ -54,11 +53,14 @@ def init_table(table, source):
     # aisle_seats = (text_file[columns // 2 - 1], text_file[columns // 2])  # index starts at 0
     # print(f"{rows=}\n{columns=}\n{window_seats=}\n{aisle_seats=}")
 
+    cursor.execute("INSERT INTO flights VALUES (?, ?)", (table, route))
     # commit changes and close connection
     connection.commit()
     connection.close()
+    print(f"Created new table {table} and added it to flights with route {route}")
 
 
 if __name__ == "__main__":
-    file_name = r"chartIn4.txt"
-    init_table("flight04", str(BASE_DIR).removesuffix("boeing") + "project_description\\" + file_name)
+    file_name = r"chartIn3.txt"
+    init_table("flight05", "Bremen - Seattle",
+               str(BASE_DIR).removesuffix("boeing") + "project_description\\" + file_name)

@@ -12,30 +12,13 @@
 
 <h1> These are our current Flights:</h1>
     <br>
+{% for flight in flights %}
 <div style="float:left; margin-left:5%">
-  <h2><a href="{% url 'flight01' %}"> Berlin - Palma de Mallorca </a></h2>
-<pre>
-    {{ flight01 }}
-</pre>
+    <h2><a href="{% url flight.name %}"> {{ flight.route }} </a></h2>
+    <pre>
+        {{ flight.data }}
+    </pre>
 </div>
-<div style="float:left; margin-left:5%">
-<h2><a href="{% url 'flight02' %}"> Hannover - Ibiza </a></h2>
-<pre>
-    {{ flight02 }}
-</pre>
-</div>
-<div style="float:left; margin-left:5%">
-<h2><a href="{% url 'flight03' %}"> Frankfurt - Paris </a></h2>
-<pre>
-    {{ flight03 }}
-</pre>
-</div>
-<div style="float:left; margin-left:5%">
-<h2><a href="{% url 'flight04' %}"> Hammenstedt - Dubai</a></h2>
-<pre>
-    {{ flight04 }}
-</pre>
-</div>
-
+{% endfor %}
 
 {% endblock %}

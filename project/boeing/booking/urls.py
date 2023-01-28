@@ -2,11 +2,11 @@
 
 from django.urls import path
 from . import views
+from boeing.helperfunctions import get_flights
 
 urlpatterns = [
-    path("", views.overview, name="overview"),
-    path("flight01", views.checkbox, name="flight01"),
-    path("flight02", views.checkbox, name="flight02"),
-    path("flight03", views.checkbox, name="flight03"),
-    path("flight04", views.checkbox, name="flight04"),
+    path("", views.overview, name="overview")
 ]
+
+for flight in get_flights().keys():
+    urlpatterns.append(path(flight, views.checkbox, name=flight))

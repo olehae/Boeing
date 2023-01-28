@@ -73,7 +73,7 @@ def send_confirmation_mail(email_address):
         subject = 'Confirmation Email'
         body = f"""This is your confirmation email with code {code}"""
 
-        # create emailmessage object from emailmassege class and perpare email
+        # create em object from emailmessage class and prepare email
         em = EmailMessage()
         em['From'] = email_sender
         em['To'] = email_address
@@ -101,13 +101,13 @@ def send_booking_mail(email_address, flight_name, booked_seats):
         seat_list += f"- Row: {i[0]}  Seat: {i[1]}\n"
 
     # define mail body
-    body = f"""Thank you for booking the following seats on {flight_name}:\n
+    body = f"""Thank you for booking the following seats on {flight_name} {get_flights()[flight_name]}:\n
 {seat_list}\nIf you did not book these seats, you can cancel them by logging into your account."""
 
     em = EmailMessage()
     em['From'] = email_sender
     em['To'] = email_address
-    em['Subject'] = f"Booking Confirmation for {flight_name}"
+    em['Subject'] = f"Booking Confirmation for {flight_name} {get_flights()[flight_name]}"
     em.set_content(body)
 
     # formatting and sending the email via ssl function
@@ -121,7 +121,7 @@ def send_booking_mail(email_address, flight_name, booked_seats):
 # get data from table
 def get_seat_data(table_name):
     # connect to db
-    connection = sqlite3.connect(DATABASES['default']['NAME'])
+    connection = dbconnection()
     cursor = connection.cursor()
     seats = cursor.execute("SELECT * FROM {}".format(table_name)).fetchall()
     connection.close()
@@ -141,3 +141,77 @@ def get_seat_data(table_name):
             output_str += f" {elem[1]} "
 
     return output_str, seat_set
+
+
+def get_flights():
+    connection = dbconnection()
+    cursor = connection.cursor()
+    flights_data = cursor.execute("SELECT * FROM flights").fetchall()
+    connection.close()
+    flights = {}
+    for i in flights_data:
+        flights[i[0]] = i[1]
+    return flights
+
+
+# Is called on button click to print stats to text file
+def print_stats():
+    # Reset existing txt file
+    text_file = open("stats.txt", 'w')
+    text_file.write("")
+    text_file.close()
+    # Opens the created file
+    text_file = open("stats.txt", 'a')
+
+    # Database connection
+    connection = dbconnection()
+    cursor = connection.cursor()
+
+    # Get user data
+    users = cursor.execute("SELECT * FROM user").fetchall()
+
+    # Write user data to text file
+    text_file.write("User number: " + str(len(users)) + "\n")
+    text_file.write("UserID\tName\t\tUsername\tE-mail\t\t\t\t\tSuperuser\n\n")
+    for user in users:
+        # Doesn't print the password
+        for i in range(len(user) - 1):
+            text_file.write(str(user[i]))
+            # Indents the lines
+            indent = 0
+            if i == 0 or i == 4:
+                indent = 8
+            elif i == 1 or i == 2:
+                indent = 16
+            else:
+                indent = 40
+            for j in range(indent - len(str(user[i]))):
+                text_file.write(" ")
+        text_file.write("\n")
+    text_file.write("\n")
+
+    # Get seat data
+    all_flight_tables = get_flights().keys()
+
+    # For every flight
+    for table in all_flight_tables:
+        # Print available
+        text_file.write(table + " AVAILABLE\n")
+        text_file.write("Row\tSeat\n")
+        available_seats = cursor.execute("SELECT Row, Seat FROM {} WHERE Occupied is FALSE"
+                                         .format(table)).fetchall()
+        for seat in available_seats:
+            text_file.write(str(seat[0]) + "\t" + str(seat[1]) + "\n")
+        text_file.write("\n")
+
+        # Print occupied
+        text_file.write(table + " OCCUPIED\n")
+        text_file.write("Row\tSeat\tUserID\n")
+        occupied_seats = cursor.execute("SELECT Row, Seat, Userid FROM {} WHERE Occupied is TRUE"
+                                        .format(table)).fetchall()
+        for seat in occupied_seats:
+            text_file.write(str(seat[0]) + "\t" + str(seat[1]) + "\t" + str(seat[2]) + "\n")
+        text_file.write("\n")
+
+    connection.close()
+    text_file.close()
