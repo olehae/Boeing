@@ -1,0 +1,471 @@
+User number: 6
+UserID	Name		Username	E-mail					Superuser
+
+1       Tom             Schewski        pan.northeim@web.de                     1       
+2       niklas          Kockington      pan.northeim@web.de                     0       
+3       Ole             Oleschnole      pan.northeim@web.de                     0       
+4       Tom             Olli            pan.northeim@web.de                     0       
+5       hermann         hjhueffer       h.hueffer@stud.uni-goettingen.de        0       
+6       0               0               hwr68110@nezid.com                      0       
+
+flight01 AVAILABLE
+Row	Seat
+1	A
+1	B
+1	C
+1	D
+1	E
+1	F
+2	A
+2	B
+2	C
+2	D
+2	E
+2	F
+3	A
+3	B
+3	C
+3	D
+3	E
+3	F
+4	A
+4	B
+4	D
+4	E
+5	A
+5	B
+5	C
+5	D
+5	E
+5	F
+6	A
+6	B
+6	C
+6	D
+6	E
+6	F
+7	A
+7	B
+7	C
+7	D
+7	E
+7	F
+8	A
+8	B
+8	C
+8	D
+8	E
+8	F
+9	A
+9	C
+9	D
+9	F
+10	A
+10	B
+10	C
+10	D
+10	E
+10	F
+
+flight01 OCCUPIED
+Row	Seat	UserID
+4	C	1
+4	F	1
+9	B	1
+9	E	1
+
+flight02 AVAILABLE
+Row	Seat
+1	A
+1	B
+1	E
+2	C
+2	F
+3	B
+3	D
+4	A
+4	C
+5	B
+5	E
+5	F
+6	B
+6	D
+7	A
+7	D
+7	E
+7	F
+8	A
+9	B
+9	C
+9	F
+10	A
+10	C
+10	D
+10	F
+
+flight02 OCCUPIED
+Row	Seat	UserID
+1	C	None
+1	D	None
+1	F	None
+2	A	None
+2	B	None
+2	D	None
+2	E	None
+3	A	None
+3	C	None
+3	E	None
+3	F	None
+4	B	None
+4	D	None
+4	E	None
+4	F	None
+5	A	None
+5	C	None
+5	D	None
+6	A	None
+6	C	None
+6	E	None
+6	F	None
+7	B	None
+7	C	None
+8	B	None
+8	C	None
+8	D	None
+8	E	None
+8	F	None
+9	A	None
+9	D	None
+9	E	None
+10	B	None
+10	E	None
+
+flight03 AVAILABLE
+Row	Seat
+1	A
+1	B
+1	C
+1	D
+1	E
+1	F
+1	G
+1	H
+1	I
+1	J
+2	A
+2	B
+2	C
+2	D
+2	E
+2	F
+2	G
+2	H
+2	I
+2	J
+3	A
+3	B
+3	C
+3	D
+3	E
+3	F
+3	G
+3	H
+3	I
+3	J
+4	A
+4	B
+4	C
+4	D
+4	E
+4	F
+4	G
+4	H
+4	I
+4	J
+5	A
+5	B
+5	C
+5	D
+5	E
+5	F
+5	G
+5	H
+5	I
+5	J
+6	A
+6	B
+6	C
+6	D
+6	E
+6	F
+6	G
+6	H
+6	I
+6	J
+7	A
+7	B
+7	C
+7	D
+7	E
+7	F
+7	G
+7	H
+7	I
+7	J
+8	A
+8	B
+8	C
+8	D
+8	E
+8	F
+8	G
+8	H
+8	I
+8	J
+9	A
+9	B
+9	C
+9	D
+9	E
+9	F
+9	G
+9	H
+9	I
+9	J
+10	A
+10	B
+10	C
+10	D
+10	E
+10	F
+10	G
+10	H
+10	I
+10	J
+11	A
+11	B
+11	C
+11	D
+11	E
+11	F
+11	G
+11	H
+11	I
+11	J
+12	A
+12	B
+12	C
+12	D
+12	E
+12	F
+12	G
+12	H
+12	I
+12	J
+13	A
+13	B
+13	C
+13	D
+13	E
+13	F
+13	G
+13	H
+13	I
+13	J
+14	A
+14	B
+14	C
+14	D
+14	E
+14	F
+14	G
+14	H
+14	I
+14	J
+15	A
+15	B
+15	C
+15	D
+15	E
+15	F
+15	G
+15	H
+15	I
+15	J
+16	A
+16	B
+16	C
+16	D
+16	E
+16	F
+16	G
+16	H
+16	I
+16	J
+17	A
+17	B
+17	C
+17	D
+17	E
+17	F
+17	G
+17	H
+17	I
+17	J
+18	A
+18	B
+18	C
+18	D
+18	E
+18	F
+18	G
+18	H
+18	I
+18	J
+19	A
+19	B
+19	C
+19	D
+19	E
+19	F
+19	G
+19	H
+19	I
+19	J
+20	A
+20	B
+20	C
+20	D
+20	E
+20	F
+20	G
+20	H
+20	I
+20	J
+21	A
+21	B
+21	C
+21	D
+21	E
+21	F
+21	G
+21	H
+21	I
+21	J
+22	A
+22	B
+22	C
+22	D
+22	E
+22	F
+22	G
+22	H
+22	I
+22	J
+23	A
+23	B
+23	C
+23	D
+23	E
+23	F
+23	G
+23	H
+23	I
+23	J
+24	A
+24	B
+24	C
+24	D
+24	E
+24	F
+24	G
+24	H
+24	I
+24	J
+25	A
+25	B
+25	C
+25	D
+25	E
+25	F
+25	G
+25	H
+25	I
+25	J
+26	A
+26	B
+26	C
+26	D
+26	E
+26	F
+26	G
+26	H
+26	I
+26	J
+27	A
+27	B
+27	C
+27	D
+27	E
+27	F
+27	G
+27	H
+27	I
+27	J
+28	A
+28	B
+28	C
+28	D
+28	E
+28	F
+28	G
+28	H
+28	I
+28	J
+29	A
+29	B
+29	C
+29	D
+29	E
+29	F
+29	G
+29	H
+29	I
+29	J
+30	A
+30	B
+30	C
+30	D
+30	E
+30	F
+30	G
+30	H
+30	I
+30	J
+
+flight03 OCCUPIED
+Row	Seat	UserID
+
+flight04 AVAILABLE
+Row	Seat
+1	A
+1	B
+1	C
+1	D
+2	A
+2	B
+2	C
+2	D
+3	A
+3	B
+3	C
+3	D
+4	A
+4	B
+4	C
+4	D
+
+flight04 OCCUPIED
+Row	Seat	UserID
+
+Available seats:
