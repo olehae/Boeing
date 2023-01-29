@@ -9,19 +9,19 @@ UserID	Name		Username	E-mail					Superuser
 
 Flight 1
 Seats available: 60	100.0
-Seats reserved: 0	0.0
+Seats reserved:  0	0.0
 
 Flight 2
 Seats available: 26	43.33
-Seats reserved: 34	56.66
+Seats reserved:  34	56.66
 
 Flight 3
 Seats available: 300	100.0
-Seats reserved: 0	0.0
+Seats reserved:  0	0.0
 
 Flight 4
 Seats available: 16	100.0
-Seats reserved: 0	0.0
+Seats reserved:  0	0.0
 
 flight01 AVAILABLE
 Row	Seat
