@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from boeing.helperfunctions import dbconnection, get_seat_data, get_flights, print_stats
+from boeing.helperfunctions import dbconnection, get_seat_data, get_flights, print_stats, calculate_stats
 from django.http import HttpResponse, HttpResponseNotFound
 import plotly
 
@@ -88,23 +88,8 @@ def admin(request):
     connection = dbconnection()
     cursor = connection.cursor()
 
-    sum_all = 0
-    sum_available = 0
-    all_flight_tables = get_flights().keys()
-    # For every flight table
-    for table in all_flight_tables:
-        # Gets flight table
-        seat_list = cursor.execute("SELECT Occupied FROM {}".format(table)).fetchall()
-
-        # Cleans up the table
-        for i in range(len(seat_list)):
-            seat_list[i] = seat_list[i][0]
-
-        # Calculates seats
-        sum_all += len(seat_list)
-        for seat in seat_list:
-            if seat == 0:
-                sum_available += 1
+    # Uses helperfunctions
+    stats = calculate_stats()
 
     # Get user number
     users = cursor.execute("SELECT userid FROM user").fetchall()
@@ -125,10 +110,22 @@ def admin(request):
         graphs.append(plotly.offline.plot(fig, auto_open=False, output_type="div"))
 
     values = {
-        "available": sum_available,
-        "available_perc": str(100*sum_available/sum_all)[:5],
-        "occupied": sum_all - sum_available,
-        "occupied_perc": str(100*(sum_all - sum_available)/sum_all)[:5],
+        "available1": stats[0],
+        "available_perc1": stats[1],
+        "occupied1": stats[2],
+        "occupied_perc1": stats[3],
+        "available2": stats[4],
+        "available_perc2": stats[5],
+        "occupied2": stats[6],
+        "occupied_perc2": stats[7],
+        "available3": stats[8],
+        "available_perc3": stats[9],
+        "occupied3": stats[10],
+        "occupied_perc3": stats[11],
+        "available4": stats[12],
+        "available_perc4": stats[13],
+        "occupied4": stats[14],
+        "occupied_perc4": stats[15],
         "user_count": user_count,
         "graphs": graphs,
     }

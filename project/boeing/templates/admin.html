@@ -19,10 +19,31 @@
 <a href="{% url 'home' %}">Home</a>
 <br>
 <h1>Hi Admin!</h1>
+User number: {{user_count}}
+<br>
+<br>
+Flight 1
 <table>
-    <tr> <td> Seats available: </td> <td> {{available}} </td> <td> ... </td> <td> {{available_perc}}% </td> </tr>
-    <tr> <td> Seats reserved: </td> <td> {{occupied}} </td> <td> ... </td> <td> {{occupied_perc}}% </td> </tr>
-    <tr> <td> User number: </td> <td> {{user_count}} </td> </tr>
+    <tr> <td> Seats available: </td> <td> {{available1}} </td> <td> &nbsp&nbsp&nbsp&nbsp&nbsp </td> <td> {{available_perc1}}% </td> </tr>
+    <tr> <td> Seats reserved: </td> <td> {{occupied1}} </td> <td>  </td> <td> {{occupied_perc1}}% </td> </tr>
+</table>
+<br>
+Flight 2
+<table>
+    <tr> <td> Seats available: </td> <td> {{available2}} </td> <td> &nbsp&nbsp&nbsp&nbsp&nbsp </td> <td> {{available_perc2}}% </td> </tr>
+    <tr> <td> Seats reserved: </td> <td> {{occupied2}} </td> <td>  </td> <td> {{occupied_perc2}}% </td> </tr>
+</table>
+<br>
+Flight 3
+<table>
+    <tr> <td> Seats available: </td> <td> {{available3}} </td> <td> &nbsp&nbsp&nbsp&nbsp&nbsp </td> <td> {{available_perc3}}% </td> </tr>
+    <tr> <td> Seats reserved: </td> <td> {{occupied3}} </td> <td>  </td> <td> {{occupied_perc3}}% </td> </tr>
+</table>
+<br>
+Flight 4
+<table>
+    <tr> <td> Seats available: </td> <td> {{available4}} </td> <td> &nbsp&nbsp&nbsp&nbsp&nbsp </td> <td> {{available_perc4}}% </td> </tr>
+    <tr> <td> Seats reserved: </td> <td> {{occupied4}} </td> <td>  </td> <td> {{occupied_perc4}}% </td> </tr>
 </table>
 
 <form action="" method="POST">
