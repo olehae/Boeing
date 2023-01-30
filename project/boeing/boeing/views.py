@@ -36,10 +36,10 @@ def home(request):
             user_data = cursor.execute("SELECT Row, Seat FROM {} WHERE Userid = ?"
                                        .format(name), (request.session["userid"],)).fetchall()
             # Save flight name, row and seat into one String to make html part easier
-            not_needed, one_row = get_seat_data(name)
-            left_aisle_seats = one_row[(len(one_row)//2)-1]
-            right_aisle_seats = one_row[len(one_row)//2]
-            aisle_seats = left_aisle_seats+right_aisle_seats
+            one_row = get_seat_data(name)[1]
+            left_aisle_seats = one_row[(len(one_row) // 2) - 1]
+            right_aisle_seats = one_row[len(one_row) // 2]
+            aisle_seats = left_aisle_seats + right_aisle_seats
             window_seats = [one_row[0], one_row[-1]]
             for i in user_data:
                 if i[1] in aisle_seats:
@@ -48,7 +48,7 @@ def home(request):
                     seat_type = "window seat"
                 else:
                     seat_type = "middle seat"
-                seat = str(flight_names[name]) + ", Row " + str(i[0]) + ", Seat " + str(i[1] + ", Seat type: " + seat_type)
+                seat = str(flight_names[name])+", Row "+str(i[0])+", Seat "+str(i[1]+", Seat type: "+seat_type)
                 booked_seats.append(seat)
 
         # close db connection
@@ -68,7 +68,7 @@ def home(request):
     return render(request, "home.html", values)
 
 
-def help(request):
+def help_page(request):
     return render(request, "help.html")
 
 
@@ -96,9 +96,6 @@ def admin(request):
     connection = dbconnection()
     cursor = connection.cursor()
 
-    # Not needed anymore
-    # stats = calculate_stats()
-
     # Get user number
     users = cursor.execute("SELECT userid FROM user").fetchall()
     user_count = len(users)
@@ -111,8 +108,8 @@ def admin(request):
         data = cursor.execute("SELECT Occupied from {}".format(flight)).fetchall()
         data = [i[0] for i in data]
         chart_values = [len([i for i in data if i]), len([i for i in data if not i])]
-        flight_stats.append(Flight(flight, chart_values[1], str(100*chart_values[1]/len(data))[:5],
-                                   chart_values[0], str(100*chart_values[0]/len(data))[:5]))
+        flight_stats.append(Flight(flight, chart_values[1], str(100 * chart_values[1] / len(data))[:5],
+                                   chart_values[0], str(100 * chart_values[0] / len(data))[:5]))
         # plotting the pie chart
         fig = plotly.graph_objs.Figure()
         fig.add_trace(plotly.graph_objs.Pie(labels=["Booked", "Available"], values=chart_values, sort=False))
