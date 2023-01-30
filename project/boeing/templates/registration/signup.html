@@ -30,14 +30,15 @@
     <br><br>
 
     <input type="password" id="passwordconfirmation" name="passwordconfirmation" required>
-    <label for="passwordconfirmation"> - Passwordconfirmation</label>
+    <label for="passwordconfirmation"> - Password confirmation</label>
     <br><br>
 
     <button type="submit">Sign Up</button>
   </form>
 <h3 style="color: crimson">{{ error }}</h3>
 
-<p>If you already have an account, click <a href="{% url 'login' %}">Log In</a>.</p>
+<p>If you already have an account, click <a href="{% url 'login' %}">Log In</a></p>
+<p>If you already created an account, but didn't confirm your email, click <a href="{% url 'emailconfirmation' %}">Email confirmation</a></p>
 <p>If you want to go back, click <a href="{% url 'home' %}">Home</a>.</p>
 
 {% endblock %}

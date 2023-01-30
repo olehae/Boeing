@@ -21,6 +21,6 @@ urlpatterns = [
     path('', views.home, name='home'),  # no path shows home.html template as home
     path("accounts/", include("accounts.urls")),  # include our own accounts app in accounts/ path
     path("booking/", include("booking.urls")),  # path booking/ redirects to the booking apps urls file
-    path("help/", views.help, name="help"),  # help page
+    path("help/", views.help_page, name="help"),  # help page
     path("admin/", views.admin, name="admin"),  # admin page
 ]

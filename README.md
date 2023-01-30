@@ -22,7 +22,6 @@ this seat reservation can do things such as:
 
 
 ## Code examples
-_to do_
 ```Python
 'DIRS': [BASE_DIR / 'templates']
 ```
@@ -59,7 +58,7 @@ Formatting the seats into a string that is displayed on the overview page. In th
 the attributes of an individual seat. elem[0] represents the row, elem[1] is the letter and elem[3] is the booking status.
 
 ## Installation
-- Make sure that django and sqlite3 is installed to your environment and your environment is activated
+- Make sure that all the [requirements](project/boeing/requirements.txt) are installed to your environment and your environment is activated
 - Go to project/boeing/ in your shell and do:
 ```Shell
 python manage.py runserver
@@ -67,6 +66,19 @@ python manage.py runserver
 - Open http://127.0.0.1:8000/ in your browser to access the website
 - Use to Ctrl C in the shell to stop the program
 
+## Contributors
+| Name                                          | Contributions                                                                      |
+|-----------------------------------------------|------------------------------------------------------------------------------------|
+| [Niklas](https://github.com/Niklas257)        | <li>display seats <li>css <li>reserve / cancel seats                               |
+| [Ole](https://github.com/olehae)              | <li>input data <li>login <li>reserve / cancel seats <li>admin plots <li>deployment |
+| [Tom](https://github.com/tomschewski)         | <li>login / logout <li>account db <li>email system                                 |
+| [Hermann Josef](https://github.com/hjhueffer) | <li>help page <li>orientation buttons                                              |                                            |
+| [Nathan](https://github.com/NathanSoeding)    | <li>admin stats <li>text file overview                                             |
+
+## Deployment
+You can visit the deployed version of this project at:
+
+### https://olehae.pythonanywhere.com
 
 ## License
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use news-please except in compliance 

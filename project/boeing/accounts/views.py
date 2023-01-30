@@ -38,7 +38,7 @@ def sign_up_view(request):
             connection.commit()
             connection.close()
             return HttpResponseRedirect(reverse('emailconfirmation'))
-        # This else only triggers when the passowrds
+        # This else only triggers when the passwords don't match
         else:
             return render(request, "registration/signup.html",
                           {"error": "Your passwords did not match, please try again"})
