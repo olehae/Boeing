@@ -20,7 +20,7 @@ def init_table(table, route, source):
                    Row INT NOT NULL,
                    Seat CHAR(2) NOT NULL ,
                    Occupied BOOLEAN NOT NULL,
-                   Userid INT
+                   Username TEXT
                    );""".format(table))
 
     # read from given text file
