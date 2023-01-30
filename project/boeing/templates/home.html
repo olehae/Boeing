@@ -31,24 +31,24 @@ input[type="submit"] {
       <p><a href="{% url 'admin' %}">Admin</a></p>
     {% endif %}
     </div>
-    <div style="float: left; margin-left: 30%">
+    <div style="float: left; margin-left: 35%">
       <h1> Hi {{ username }}!</h1>
       <p style="font-size: 120%; margin-left: -20%">What is todays destination going to be?</p><br>
       <h2 style="font-size: 200%; margin-left: -13%"> <a href="{% url 'overview' %}">Our current flights</a> </h2>
     </div>
 {% else %}
     <div style="float: left; margin-left: 2%">
-    <a href="{% url 'login' %}">Log In</a>
+    <br><a href="{% url 'login' %}">Log In</a>
     <br><br>
     <a href="{% url 'signup' %}">Sign Up</a>
     <br><br>
     <a href="{% url 'help' %}#not_logged_in">Help Page</a>
     <br><br>
     </div>
-    <div style="float: left; margin-left: 30%">
+    <div style="float: left; margin-left: 25%">
         <h1>Welcome to our Airline Seat Reservation</h1>
-        <h2>You are not logged in</h2>
-        <h3> <a href="{% url 'overview' %}">Our current flights</a> </h3>
+        <h2 style="margin-left: 25%">You are not logged in</h2><br>
+        <h3 style="font-size:200%; margin-left: 22%"> <a href="{% url 'overview' %}">Our current flights</a> </h3>
     </div>
 {% endif %}
 <div style="float:right; margin-right:2%">
