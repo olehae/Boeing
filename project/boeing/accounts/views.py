@@ -24,7 +24,7 @@ def sign_up_view(request):
 
         elif str(request.POST['password']) == str(request.POST['passwordconfirmation']):
             # send email with confirmation code
-            confirmation_code = hf.send_confirmation_mail(request.POST["email"])
+            confirmation_code = hf.send_confirmation_mail(request.POST["email"], 0)
             if not confirmation_code:
                 return render(request, "registration/signup.html",
                               {"error": "Invalid Email address, please try again with correct address"})
@@ -38,7 +38,7 @@ def sign_up_view(request):
             connection.commit()
             connection.close()
             return HttpResponseRedirect(reverse('emailconfirmation'))
-        # This else only triggers when the passwords don't match
+        # This else only triggers when the passowrds
         else:
             return render(request, "registration/signup.html",
                           {"error": "Your passwords did not match, please try again"})
@@ -123,3 +123,24 @@ def logout_view(request):
         return HttpResponseRedirect(reverse('home'))
 
     return HttpResponseRedirect(reverse('home'))
+
+
+def delete_account_view(request):
+    connection = hf.dbconnection()
+    cursor = connection.cursor()
+    sent = False
+
+    if "sentmail" in request.POST.keys():
+        request.session['deletion_code'] = hf.send_confirmation_mail(request.session["email"], 1)
+        print("hitler")
+        sent = True
+
+    if "confirmationcode" in request.POST.keys():
+        print(request.POST['confirmationcode'], request.session['deletion_code'])
+        if int(request.POST['confirmationcode']) == request.session['deletion_code']:
+            cursor.execute("DELETE FROM user WHERE username = ?", (request.session["username"],))
+            connection.commit()
+            return HttpResponseRedirect(reverse('logout'))
+                
+
+    return render(request, "deleteaccount.html", {'sent': sent})
