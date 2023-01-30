@@ -154,42 +154,8 @@ def get_flights():
     return flights
 
 
-# The stats that are displayed on the website and in the txt document are calculated here
-def calculate_stats():
-    connection = dbconnection()
-    cursor = connection.cursor()
-    # Saves sums in list
-    sum_all = [0, 0, 0, 0]
-    sum_available = [0, 0, 0, 0]
-    all_flight_tables = get_flights().keys()
-    # Counts to 4 for every flight
-    flight_nbr = 0
-    # For every flight table
-    for table in all_flight_tables:
-        # Gets flight table
-        seat_list = cursor.execute("SELECT Occupied FROM {}".format(table)).fetchall()
-
-        # Cleans up the table
-        for i in range(len(seat_list)):
-            seat_list[i] = seat_list[i][0]
-
-        # Calculates seats
-        sum_all[flight_nbr] += len(seat_list)
-        for seat in seat_list:
-            if seat == 0:
-                sum_available[flight_nbr] += 1
-        flight_nbr += 1
-
-    connection.close()
-    # Calculates the needed values and returns them
-    return [sum_available[0], str(100*sum_available[0]/sum_all[0])[:5], sum_all[0] - sum_available[0], str(100*(sum_all[0] - sum_available[0])/sum_all[0])[:5],
-            sum_available[1], str(100*sum_available[1]/sum_all[1])[:5], sum_all[1] - sum_available[1], str(100*(sum_all[1] - sum_available[1])/sum_all[1])[:5],
-            sum_available[2], str(100*sum_available[2]/sum_all[2])[:5], sum_all[2] - sum_available[2], str(100*(sum_all[2] - sum_available[2])/sum_all[2])[:5],
-            sum_available[3], str(100*sum_available[3]/sum_all[3])[:5], sum_all[3] - sum_available[3], str(100*(sum_all[3] - sum_available[3])/sum_all[3])[:5]]
-
-
 # Is called on button click to print stats to text file
-def print_stats():
+def print_stats(flights):
     # Reset existing txt file
     text_file = open("stats.txt", 'w')
     text_file.write("")
@@ -222,28 +188,19 @@ def print_stats():
             for j in range(indent - len(str(user[i]))):
                 text_file.write(" ")
         text_file.write("\n")
-    text_file.write("\n")
 
-    stats = calculate_stats()
-
-    text_file.write("Flight 1\n")
-    text_file.write("Seats available: " + str(stats[0]) + "\t" + stats[1] + "%\n")
-    text_file.write("Seats reserved:  " + str(stats[2]) + "\t" + stats[3] + "%\n\n")
-    text_file.write("Flight 2\n")
-    text_file.write("Seats available: " + str(stats[4]) + "\t" + stats[5] + "%\n")
-    text_file.write("Seats reserved:  " + str(stats[6]) + "\t" + stats[7] + "%\n\n")
-    text_file.write("Flight 3\n")
-    text_file.write("Seats available: " + str(stats[8]) + "\t" + stats[9] + "%\n")
-    text_file.write("Seats reserved:  " + str(stats[10]) + "\t" + stats[11] + "%\n\n")
-    text_file.write("Flight 4\n")
-    text_file.write("Seats available: " + str(stats[12]) + "\t" + stats[13] + "%\n")
-    text_file.write("Seats reserved:  " + str(stats[14]) + "\t" + stats[15] + "%\n\n")
+    text_file.write("\n\n"+"-"*100+"\n\n\n")  # Section break
+    for flight in flights:
+        text_file.write(f"{flight.name}\n")
+        text_file.write(f"Seats available: {flight.available}\t{flight.available_perc}%\n")
+        text_file.write(f"Seats reserved:  {flight.occupied}\t{flight.occupied_perc}%\n\n")
 
     # Get seat data
     all_flight_tables = get_flights().keys()
 
     # For every flight
     for table in all_flight_tables:
+        text_file.write("\n\n" + "-" * 100 + "\n\n\n")  # Section break
         # Print available
         text_file.write(table + " AVAILABLE\n")
         text_file.write("Row\tSeat\n")
@@ -260,7 +217,6 @@ def print_stats():
                                         .format(table)).fetchall()
         for seat in occupied_seats:
             text_file.write(str(seat[0]) + "\t" + str(seat[1]) + "\t" + str(seat[2]) + "\n")
-        text_file.write("\n")
 
     connection.close()
     text_file.close()

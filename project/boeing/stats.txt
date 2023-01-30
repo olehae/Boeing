@@ -7,21 +7,30 @@ UserID	Name		Username	E-mail					Superuser
 4       Tom             Olli            pan.northeim@web.de                     0       
 5       hermann         hjhueffer       h.hueffer@stud.uni-goettingen.de        0       
 
-Flight 1
-Seats available: 60	100.0
-Seats reserved:  0	0.0
 
-Flight 2
-Seats available: 26	43.33
-Seats reserved:  34	56.66
+----------------------------------------------------------------------------------------------------
 
-Flight 3
-Seats available: 300	100.0
-Seats reserved:  0	0.0
 
-Flight 4
-Seats available: 16	100.0
-Seats reserved:  0	0.0
+flight01
+Seats available: 60	100.0%
+Seats reserved:  0	0.0%
+
+flight02
+Seats available: 26	43.33%
+Seats reserved:  34	56.66%
+
+flight03
+Seats available: 300	100.0%
+Seats reserved:  0	0.0%
+
+flight04
+Seats available: 16	100.0%
+Seats reserved:  0	0.0%
+
+
+
+----------------------------------------------------------------------------------------------------
+
 
 flight01 AVAILABLE
 Row	Seat
@@ -89,6 +98,10 @@ Row	Seat
 flight01 OCCUPIED
 Row	Seat	UserID
 
+
+----------------------------------------------------------------------------------------------------
+
+
 flight02 AVAILABLE
 Row	Seat
 1	A
@@ -154,6 +167,10 @@ Row	Seat	UserID
 9	E	None
 10	B	None
 10	E	None
+
+
+----------------------------------------------------------------------------------------------------
+
 
 flight03 AVAILABLE
 Row	Seat
@@ -461,6 +478,10 @@ Row	Seat
 flight03 OCCUPIED
 Row	Seat	UserID
 
+
+----------------------------------------------------------------------------------------------------
+
+
 flight04 AVAILABLE
 Row	Seat
 1	A
@@ -482,4 +503,3 @@ Row	Seat
 
 flight04 OCCUPIED
 Row	Seat	UserID
-
