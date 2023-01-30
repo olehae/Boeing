@@ -123,6 +123,7 @@ def admin(request):
     # add list of graph objects and list of flight objects to values
     values["graphs"] = graphs
     values["flight_stats"] = flight_stats
+    values["name"] = request.session["username"]
 
     connection.close()
     return render(request, "admin.html", values)

@@ -20,7 +20,7 @@ def init_table(table, route, source):
                    Row INT NOT NULL,
                    Seat CHAR(2) NOT NULL ,
                    Occupied BOOLEAN NOT NULL,
-                   Username TEXT
+                   Userid INT
                    );""".format(table))
 
     # read from given text file
@@ -47,11 +47,6 @@ def init_table(table, route, source):
             else:
                 cursor.execute("""INSERT INTO {} VALUES (?, ?, ?, ?)""".format(table),
                                (rows, i, False, None))
-
-    # these two calculations are not needed yet, but they might be needed later
-    # window_seats = (text_file[0], text_file[columns - 1])
-    # aisle_seats = (text_file[columns // 2 - 1], text_file[columns // 2])  # index starts at 0
-    # print(f"{rows=}\n{columns=}\n{window_seats=}\n{aisle_seats=}")
 
     cursor.execute("INSERT INTO flights VALUES (?, ?)", (table, route))
     # commit changes and close connection

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<h2> Are you sure that you want to delete your account? If so, check your mail for the cofirmation code. </h2>
+<h2> Are you sure that you want to delete your account? If so, check your mail for the confirmation code. </h2>
 
 <form method="post">
     {% csrf_token %}
@@ -14,7 +14,7 @@
         {{ form.as_p }}
         <input type="text" name="confirmationcode" required>
         <br><br>
-        <button type="submit">Confirm</button>
+        <button type="submit" onclick="return confirm('Are you sure you want to delete your account?')">Confirm</button>
     {% else %}
         <button name="sentmail" class="btn">Send Email</button>    
     {% endif %}

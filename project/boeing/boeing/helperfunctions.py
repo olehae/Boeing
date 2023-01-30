@@ -64,7 +64,8 @@ def write_into_db(signupdata):
         print("Creation of user profile failed!")
 
 
-def send_confirmation_mail(email_address, type): # type 0 is registraion and 1 is deletion
+# type 0 is registration and 1 is deletion
+def send_confirmation_mail(email_address, type):
 
     if type == 0:
         content = 'confirmation email for registration'

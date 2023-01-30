@@ -1,11 +1,9 @@
-User number: 5
+User number: 3
 UserID	Name		Username	E-mail					Superuser
 
 1       Tom             Schewski        pan.northeim@web.de                     1       
-2       niklas          Kockington      pan.northeim@web.de                     0       
-3       Ole             Oleschnole      pan.northeim@web.de                     0       
-4       Tom             Olli            pan.northeim@web.de                     0       
-5       hermann         hjhueffer       h.hueffer@stud.uni-goettingen.de        0       
+2       Ole             olehae          ole@haenies.de                          1       
+3       hermann         hjhueffer       h.hueffer@stud.uni-goettingen.de        1       
 
 
 ----------------------------------------------------------------------------------------------------

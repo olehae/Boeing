@@ -33,7 +33,7 @@ def checkbox(request):
             # get a list of all the clicked buttons after the submit button is hit
             if str(i) in request.POST.keys():
                 clicked = request.POST.getlist(str(i))
-            # print(clicked)
+
             # if clicked:
                 for j in clicked:
                     # split the strings into row and seat again in order to update their status in the database
@@ -80,6 +80,7 @@ def checkbox(request):
         if booked_seats:
             send_booking_mail(request.session['email'], flight_name, booked_seats)
             return HttpResponseRedirect(reverse('home'))  # redirect to home if seats were booked
+
     # when username does not exist in current session -> no user is logged in
     else:
         seats = None
