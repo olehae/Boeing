@@ -64,14 +64,21 @@ def write_into_db(signupdata):
         print("Creation of user profile failed!")
 
 
-def send_confirmation_mail(email_address):
+def send_confirmation_mail(email_address, type): # type 0 is registraion and 1 is deletion
+
+    if type == 0:
+        content = 'confirmation email for registration'
+
+    else:
+        content = 'confirmation email for account deletion'
+
     try:
         email_sender, email_authcode = setupemailconnection()
         code = random.randint(10000000, 99999999)
 
         # define subject and mail body
         subject = 'Confirmation Email'
-        body = f"""This is your confirmation email with code {code}"""
+        body = f"""This is your {content} with code {code}"""
 
         # create em object from emailmessage class and prepare email
         em = EmailMessage()
@@ -88,6 +95,7 @@ def send_confirmation_mail(email_address):
             smtp.sendmail(email_sender, email_address, em.as_string())
 
         return code
+
     except Exception as e:
         print(e)
         return False
