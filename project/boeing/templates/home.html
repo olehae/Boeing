@@ -30,6 +30,7 @@ input[type="submit"] {
     {% if is_superuser %}
       <p><a href="{% url 'admin' %}">Admin</a></p>
     {% endif %}
+    <p><a href="{% url 'deleteaccount' %}">Delete Account</a></p>
     </div>
     <div style="float: left; margin-left: 35%">
       <h1> Hi {{ username }}!</h1>
