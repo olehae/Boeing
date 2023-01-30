@@ -10,11 +10,16 @@
 {% block content %}
 
 
-<a href="{% url 'home' %}">Home</a>
+<a style="font-size:12px" href="{% url 'home' %}">Home</a>
 <br><br>
 
-<h1>How can I help you {{ username }}?</h1>
-<br><br>
+<h1>How can I help you?</h1>
+    <ul style="font-size:13px">
+        <li><a href="#not_logged_in">Log In/ Sign Up</a></li>
+        <li><a href="#overview">View Planes/ Reserve a seat</a></li>
+        <li><a href="#home_page">View/ cancel reserved seats</a></li>
+    </ul>
+<br><br><br>
 
 <!-- These are the paragraphs for all webpages; each has an id for precise accessibility, a picture and further information with links-->
 <div id="not_logged_in">
@@ -27,7 +32,7 @@
         click <a href="{% url 'overview' %}">Overview</a> <strong>or</strong> go to <a href="{% url 'home' %}">Home</a> and click 'Our current flights' (purple)</li>
 </ul>
 </div>
-<br><br>
+<br><br><br>
 
 <div id="home_page">
 <h2>Homepage (and logged in):</h2>
@@ -37,7 +42,7 @@
     <li>If you want to cancel reserved seats, go to <a href="{% url 'home' %}">Home</a>, then click on the boxes of those seats (purple) to select them and click 'Cancel to checked' (green)</li>
 </ul>
 </div>
-<br><br>
+<br><br><br>
 
 <div id="overview">
 <h2>Overview:</h2>
@@ -48,7 +53,7 @@
     <li>If you aren't logged in and want to change that, go to <a href="{% url 'login' %}">Log In</a></li>
 </ul>
 </div>
-<br><br>
+<br><br><br>
 
 <div id="flight">
 <h2>Flight/ seat reservation:</h2>
@@ -56,14 +61,13 @@
 <img src="{% static 'Flight_Submit2.jpg' %}" alt="picture, that explains how to submit chosen seats in order to reserve">
 
 <ul style="font-size: 15px;">
-    <li>This is the page for seat reservation</li>
     <li>Seats with an X are not available (green)</li>
     <li>To select a seat, click on it. It will turn black (orange)</li>
-    <li>Afterwards, you may either select more seats, or click the 'submit'-button (purple) to reserve the selected seat(s)</li>
+    <li>If you want to reserve your selected seat(s), click the 'Submit'-button (purple)</li>
     <li>Click <a href="{% url 'overview' %}">here</a> to return to the overview page</li>
 </ul>
 </div>
-<br><br>
+<br><br><br>
 
 <div id="flight_anyways">
 <h2>Flight/ seat reservation (not available without login):</h2>
